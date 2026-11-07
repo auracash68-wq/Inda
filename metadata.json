@@ -1,0 +1,6 @@
+{
+  "name": "Cash India",
+  "description": "Earn rewards, complete daily surveys and app tasks, and withdraw via instant UPI cashout.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
