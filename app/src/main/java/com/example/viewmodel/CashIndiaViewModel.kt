@@ -32,53 +32,8 @@ data class CashIndiaUiState(
     val walletBalanceRupees: Double = 0.00,
     val walletBalanceCoins: Int = 0,
     val selectedTaskFilter: TaskFilter = TaskFilter.ALL_TASKS,
-    val surveys: List<SurveyOffer> = listOf(
-        SurveyOffer(
-            id = "cpx_5min",
-            providerName = "CPX Research",
-            durationText = "5 Mins",
-            rewardText = "₹15 (1,500 Coins)",
-            rewardRupees = 15,
-            rewardCoins = 1500
-        ),
-        SurveyOffer(
-            id = "cpx_8min",
-            providerName = "CPX Research",
-            durationText = "8 Mins",
-            rewardText = "₹25 (2,500 Coins)",
-            rewardRupees = 25,
-            rewardCoins = 2500
-        )
-    ),
-    val allAppTasks: List<AppTaskItem> = listOf(
-        AppTaskItem(
-            id = "ludo_supreme",
-            title = "Ludo Supreme",
-            description = "Install & Play",
-            rewardText = "Earn ₹10",
-            rewardRupees = 10,
-            iconRes = R.drawable.img_ludo_icon,
-            isEasyInstall = true
-        ),
-        AppTaskItem(
-            id = "paytm_money",
-            title = "Paytm Money",
-            description = "Install & sign up free",
-            rewardText = "Earn ₹20",
-            rewardRupees = 20,
-            iconRes = R.drawable.img_paytm_icon,
-            isEasyInstall = true
-        ),
-        AppTaskItem(
-            id = "flipkart_shop",
-            title = "Flipkart Shop",
-            description = "Explore Deals",
-            rewardText = "Earn ₹15",
-            rewardRupees = 15,
-            iconRes = R.drawable.img_flipkart_icon,
-            isEasyInstall = false
-        )
-    ),
+    val surveys: List<SurveyOffer> = emptyList(),
+    val allAppTasks: List<AppTaskItem> = emptyList(),
     val selectedMyTasksSegment: MyTasksSegment = MyTasksSegment.ONGOING_PENDING,
     val todaysCreditedText: String = "₹0.00 (0 Coins)",
     val pendingVerificationText: String = "₹0.00 (0 Tasks)",
@@ -371,6 +326,14 @@ class CashIndiaViewModel(application: Application) : AndroidViewModel(applicatio
                 statusMessage = "Support ticket submitted for provider verification."
             )
         }
+    }
+
+    fun setDynamicSurveys(surveys: List<SurveyOffer>) {
+        _uiState.update { it.copy(surveys = surveys) }
+    }
+
+    fun setDynamicAppTasks(tasks: List<AppTaskItem>) {
+        _uiState.update { it.copy(allAppTasks = tasks) }
     }
 
     fun clearStatusMessage() {

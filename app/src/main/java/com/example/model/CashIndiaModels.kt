@@ -41,7 +41,7 @@ data class AppTaskItem(
     val description: String,
     val rewardText: String,
     val rewardRupees: Int,
-    @DrawableRes val iconRes: Int,
+    @param:DrawableRes val iconRes: Int,
     val isEasyInstall: Boolean
 )
 
@@ -52,7 +52,7 @@ data class OngoingTaskItem(
     val statusText: String,
     val progressFraction: Float?, // null if verifying without progress bar
     val progressLabel: String?,
-    @DrawableRes val iconRes: Int
+    @param:DrawableRes val iconRes: Int
 )
 
 data class CompletedTaskItem(
@@ -60,7 +60,7 @@ data class CompletedTaskItem(
     val title: String,
     val description: String,
     val paidBadgeText: String,
-    @DrawableRes val iconRes: Int
+    @param:DrawableRes val iconRes: Int
 )
 
 data class WithdrawalTransaction(
@@ -69,7 +69,7 @@ data class WithdrawalTransaction(
     val subtitle: String,
     val statusText: String,
     val isUpiCheckIcon: Boolean,
-    @DrawableRes val iconRes: Int? = null
+    @param:DrawableRes val iconRes: Int? = null
 )
 
 sealed class ActiveSheet {

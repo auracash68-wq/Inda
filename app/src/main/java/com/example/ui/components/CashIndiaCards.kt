@@ -317,6 +317,212 @@ fun AppTaskCard(
 }
 
 @Composable
+fun CpxSurveyLiveCard(
+    onStartSurvey: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    CashIndiaCardSurface(
+        modifier = modifier.clickable { onStartSurvey() },
+        cornerRadius = 16.dp,
+        leftTricolorStrip = true
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(14.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(46.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(Color(0xFFEBF3FF)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CpxResearchLogoIcon(size = 28.dp)
+                }
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "CPX Research Surveys",
+                        fontFamily = CashIndiaFontFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        color = PrimaryNavy
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = "High-paying surveys • Real-time coin credits",
+                        fontFamily = CashIndiaFontFamily,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 12.5.sp,
+                        color = SecondaryText
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Outlined.Schedule,
+                        contentDescription = null,
+                        tint = SecondaryText,
+                        modifier = Modifier.size(15.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = "5 - 15 Mins",
+                        fontFamily = CashIndiaFontFamily,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 12.5.sp,
+                        color = SecondaryText
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(Color(0xFFE8F5E9))
+                            .padding(horizontal = 8.dp, vertical = 3.dp)
+                    ) {
+                        Text(
+                            text = "Earn ₹10 - ₹100",
+                            fontFamily = CashIndiaFontFamily,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 11.5.sp,
+                            color = PrimaryGreen
+                        )
+                    }
+                }
+
+                Box(
+                    modifier = Modifier
+                        .height(34.dp)
+                        .clip(RoundedCornerShape(17.dp))
+                        .background(brush = OrangeButtonGradient)
+                        .clickable { onStartSurvey() }
+                        .padding(horizontal = 16.dp)
+                        .testTag("start_survey_cpx"),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Start Survey",
+                        fontFamily = CashIndiaFontFamily,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 13.5.sp,
+                        color = PureWhite
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun PubScaleOfferwallLiveCard(
+    onOpenOfferwall: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    CashIndiaCardSurface(
+        modifier = modifier.clickable { onOpenOfferwall() },
+        cornerRadius = 16.dp,
+        leftTricolorStrip = true
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(14.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.img_paytm_pubscale),
+                    contentDescription = "PubScale Offerwall",
+                    modifier = Modifier
+                        .size(46.dp)
+                        .clip(RoundedCornerShape(12.dp)),
+                    contentScale = ContentScale.Fit
+                )
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "PubScale High-Paying Tasks",
+                        fontFamily = CashIndiaFontFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        color = PrimaryNavy
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = "Browse 100+ live app install offers & games",
+                        fontFamily = CashIndiaFontFamily,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 12.5.sp,
+                        color = SecondaryText
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(Color(0xFFE8F5E9))
+                        .padding(horizontal = 9.dp, vertical = 4.dp)
+                ) {
+                    Text(
+                        text = "Earn ₹10 to ₹500+",
+                        fontFamily = CashIndiaFontFamily,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 12.sp,
+                        color = PrimaryGreen
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .height(34.dp)
+                        .clip(RoundedCornerShape(17.dp))
+                        .background(brush = GreenButtonGradient)
+                        .clickable { onOpenOfferwall() }
+                        .padding(horizontal = 16.dp)
+                        .testTag("open_pubscale_offerwall_button"),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Open Offerwall",
+                        fontFamily = CashIndiaFontFamily,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 13.5.sp,
+                        color = PureWhite
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
 fun EarningsSummaryCard(
     todaysCredited: String,
     pendingVerification: String,

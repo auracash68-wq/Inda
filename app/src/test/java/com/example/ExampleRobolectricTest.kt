@@ -29,9 +29,15 @@ class ExampleRobolectricTest {
         assertEquals(0, initial.ongoingTasks.size)
         assertEquals(0, initial.completedTasks.size)
         assertEquals(0, initial.recentWithdrawals.size)
-        assertEquals(2, initial.surveys.size)
-        assertEquals(3, initial.allAppTasks.size)
+        assertEquals(0, initial.surveys.size)
+        assertEquals(0, initial.allAppTasks.size)
         assertEquals(TaskFilter.ALL_TASKS, initial.selectedTaskFilter)
+
+        // Test dynamic setter
+        viewModel.setDynamicSurveys(listOf(
+            com.example.model.SurveyOffer("srv_1", "CPX Live", "10 Mins", "₹20", 20, 2000)
+        ))
+        assertEquals(1, viewModel.uiState.value.surveys.size)
 
         // Filter tasks
         viewModel.selectTaskFilter(TaskFilter.EASY_INSTALL)
@@ -77,5 +83,29 @@ class ExampleRobolectricTest {
         assertTrue(viewModel.uiState.value.pushNotificationsEnabled)
         viewModel.togglePushNotifications(false)
         assertFalse(viewModel.uiState.value.pushNotificationsEnabled)
+    }
+
+    @Test
+    fun verifyCpxResearchEngineUrlGeneration() {
+        val userId = "cashindia_user_test"
+        val url = com.cashindia.app.engines.CpxResearchEngine.buildSurveyUrl(userId)
+        assertTrue(url.contains("offer.cpx-research.com"))
+        assertTrue(url.contains("app_id="))
+        assertTrue(url.contains("ext_user_id=$userId"))
+    }
+
+    @Test
+    fun verifySafeMediaDrmSafeOnEmulatorsAndJvm() {
+        val uuid = java.util.UUID.randomUUID()
+        val safeDrm = com.cashindia.app.engines.SafeMediaDrm(uuid)
+        // Under JVM/Robolectric test environment, SafeMediaDrm correctly catches any native DRM HAL unavailability
+        try {
+            val bytes = safeDrm.getPropertyByteArray("deviceUniqueId")
+            assertNotNull(bytes)
+        } catch (e: Exception) {
+            // Safe failure without crashing the app or native DRM HAL
+            assertTrue(e is UnsupportedOperationException || e is android.media.MediaDrmException)
+        }
+        safeDrm.close()
     }
 }
