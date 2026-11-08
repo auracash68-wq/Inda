@@ -14,13 +14,21 @@ import org.junit.Test
 class ExampleRobolectricTest {
 
     @Test
-    fun verifyCashIndiaStateAndInteractions() {
+    fun verifyCashIndiaCleanZeroStateAndRealInteractions() {
         val viewModel = CashIndiaViewModel()
 
-        // 1. Initial Earn Screen state
+        // 1. Initial Earn Screen state (Clean 0-balance state)
         val initial = viewModel.uiState.value
         assertEquals(CashIndiaTab.EARN, initial.selectedTab)
-        assertEquals("2,500 Coins | ₹25.00", initial.earnHeaderBalanceText)
+        assertEquals(0, initial.earnHeaderCoins)
+        assertEquals("0 Coins | ₹0.00", initial.earnHeaderBalanceText)
+        assertEquals(0.00, initial.walletBalanceRupees, 0.01)
+        assertEquals(0, initial.walletBalanceCoins)
+        assertEquals("₹0.00 (0 Coins)", initial.todaysCreditedText)
+        assertEquals("₹0.00 (0 Tasks)", initial.pendingVerificationText)
+        assertEquals(0, initial.ongoingTasks.size)
+        assertEquals(0, initial.completedTasks.size)
+        assertEquals(0, initial.recentWithdrawals.size)
         assertEquals(2, initial.surveys.size)
         assertEquals(3, initial.allAppTasks.size)
         assertEquals(TaskFilter.ALL_TASKS, initial.selectedTaskFilter)
@@ -29,38 +37,42 @@ class ExampleRobolectricTest {
         viewModel.selectTaskFilter(TaskFilter.EASY_INSTALL)
         assertEquals(TaskFilter.EASY_INSTALL, viewModel.uiState.value.selectedTaskFilter)
 
-        // 2. My Tasks Screen state
+        // 2. Real reward crediting from PubScale SDK callback
+        viewModel.creditRealCoins(1600, "PubScale: High Paying Offer")
+        assertEquals(1600, viewModel.uiState.value.earnHeaderCoins)
+        assertEquals("1,600 Coins | ₹16.00", viewModel.uiState.value.earnHeaderBalanceText)
+        assertEquals(1600, viewModel.uiState.value.walletBalanceCoins)
+        assertEquals(16.00, viewModel.uiState.value.walletBalanceRupees, 0.01)
+        assertEquals(1, viewModel.uiState.value.completedTasks.size)
+
+        // 3. My Tasks Screen state
         viewModel.selectTab(CashIndiaTab.MY_TASKS)
         assertEquals(CashIndiaTab.MY_TASKS, viewModel.uiState.value.selectedTab)
-        assertEquals("₹45.00 (4,500 Coins)", viewModel.uiState.value.todaysCreditedText)
-        assertEquals("₹30.00 (2 Tasks)", viewModel.uiState.value.pendingVerificationText)
-        assertEquals(2, viewModel.uiState.value.ongoingTasks.size)
-        assertEquals(2, viewModel.uiState.value.completedTasks.size)
-
+        assertEquals(MyTasksSegment.ONGOING_PENDING, viewModel.uiState.value.selectedMyTasksSegment)
         viewModel.selectMyTasksSegment(MyTasksSegment.COMPLETED_PAID)
         assertEquals(MyTasksSegment.COMPLETED_PAID, viewModel.uiState.value.selectedMyTasksSegment)
 
-        // 3. My Wallet Screen state
+        // 4. My Wallet Screen & Real Withdrawal
         viewModel.selectTab(CashIndiaTab.WALLET)
         assertEquals(WithdrawalMethod.UPI, viewModel.uiState.value.selectedWithdrawalMethod)
         assertEquals(10, viewModel.uiState.value.selectedWithdrawalAmount)
         assertEquals(listOf(10, 20, 50, 100), viewModel.uiState.value.withdrawalAmounts)
-        assertEquals(2, viewModel.uiState.value.recentWithdrawals.size)
 
-        // Select amount and withdrawal method
-        viewModel.selectWithdrawalAmount(20)
-        assertEquals(20, viewModel.uiState.value.selectedWithdrawalAmount)
-        viewModel.selectWithdrawalMethod(WithdrawalMethod.GOOGLE_PLAY)
-        assertEquals(WithdrawalMethod.GOOGLE_PLAY, viewModel.uiState.value.selectedWithdrawalMethod)
-
-        // Validate UPI ID & withdrawal submission
+        // Select ₹10 withdrawal via UPI
         viewModel.selectWithdrawalMethod(WithdrawalMethod.UPI)
+        viewModel.selectWithdrawalAmount(10)
         viewModel.updateUpiId("sahid@okaxis")
         assertTrue(viewModel.uiState.value.isUpiVerified)
+
         viewModel.submitWithdrawal()
         assertNotNull(viewModel.uiState.value.statusMessage)
+        assertEquals(6.00, viewModel.uiState.value.walletBalanceRupees, 0.01)
+        assertEquals(600, viewModel.uiState.value.walletBalanceCoins)
+        assertEquals(600, viewModel.uiState.value.earnHeaderCoins)
+        assertEquals("600 Coins | ₹6.00", viewModel.uiState.value.earnHeaderBalanceText)
+        assertEquals(1, viewModel.uiState.value.recentWithdrawals.size)
 
-        // 4. Profile & Help Screen state
+        // 5. Profile & Help Screen state
         viewModel.selectTab(CashIndiaTab.PROFILE)
         assertTrue(viewModel.uiState.value.pushNotificationsEnabled)
         viewModel.togglePushNotifications(false)

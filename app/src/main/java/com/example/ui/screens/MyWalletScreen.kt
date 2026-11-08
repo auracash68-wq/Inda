@@ -139,7 +139,7 @@ fun MyWalletScreen(
                         GoldCoinStackIcon(size = 20.dp)
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = "4,500 Coins",
+                            text = "${java.text.NumberFormat.getNumberInstance(java.util.Locale.US).format(uiState.walletBalanceCoins)} Coins",
                             fontFamily = CashIndiaFontFamily,
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 14.sp,
@@ -336,11 +336,29 @@ fun MyWalletScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            uiState.recentWithdrawals.forEach { tx ->
-                TransactionCard(transaction = tx)
+        if (uiState.recentWithdrawals.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 20.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "No withdrawal requests yet. Complete tasks to request your first payout!",
+                    fontFamily = CashIndiaFontFamily,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 13.5.sp,
+                    color = SecondaryText,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                )
+            }
+        } else {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                uiState.recentWithdrawals.forEach { tx ->
+                    TransactionCard(transaction = tx)
+                }
             }
         }
 

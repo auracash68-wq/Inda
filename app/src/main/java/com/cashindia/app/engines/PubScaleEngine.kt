@@ -13,7 +13,7 @@ import com.pubscale.sdkone.offerwall.models.errors.InitError
 
 /**
  * Modular PubScale Offerwall Engine for Cash India.
- * Configured with official App ID "81716375" and Sandbox/Test mode support.
+ * Direct integration with official PubScale Offerwall SDK (App ID: 81716375).
  */
 object PubScaleEngine {
 
@@ -25,20 +25,27 @@ object PubScaleEngine {
         private set
 
     @Volatile
-    var isSandboxMode: Boolean = true
+    var isSandboxMode: Boolean = false
         private set
 
     private var lastAppId: String = DEFAULT_APP_ID
-    private var lastUserId: String = "test_user_01"
+    private var lastUserId: String = ""
     private var lastEnabled: Boolean = true
 
+    private var rewardCreditListener: ((Int, String) -> Unit)? = null
+
+    @JvmStatic
+    fun setRewardCreditListener(listener: ((Int, String) -> Unit)?) {
+        rewardCreditListener = listener
+    }
+
     /**
-     * Initializes the PubScale Offerwall SDK safely.
+     * Initializes the real PubScale Offerwall SDK.
      *
      * @param context Application or Activity context
      * @param appId Official PubScale App ID ("81716375")
      * @param userId Unique user identifier
-     * @param isSandbox Enables sandbox/test mode for pre-Play Store testing
+     * @param isSandbox Sandbox test flag
      * @param isEnabled Remote feature flag to enable or disable the engine
      */
     @JvmStatic
@@ -58,10 +65,11 @@ object PubScaleEngine {
 
         isSandboxMode = isSandbox
         lastAppId = appId
-        lastUserId = userId?.takeIf { it.isNotBlank() } ?: "test_user_01"
+        lastUserId = userId?.takeIf { it.isNotBlank() } ?: com.cashindia.app.UserManager.getUserId(context)
         lastEnabled = isEnabled
 
-        if (isEngineReady && OfferWall.isSDKInitialized) {
+        if (OfferWall.isSDKInitialized) {
+            isEngineReady = true
             return
         }
 
@@ -70,7 +78,6 @@ object PubScaleEngine {
                 .setUniqueId(lastUserId)
                 .setFullscreenEnabled(false)
 
-            // Invoke setSandboxEnabled(isSandbox) dynamically if supported by the loaded SDK artifact
             try {
                 val sandboxMethod = builder.javaClass.getMethod(
                     "setSandboxEnabled",
@@ -78,7 +85,7 @@ object PubScaleEngine {
                 )
                 sandboxMethod.invoke(builder, isSandbox)
             } catch (_: NoSuchMethodException) {
-                Log.d(TAG, "Using default sandbox configuration for OfferWallConfig.Builder (isSandbox=$isSandbox)")
+                Log.d(TAG, "OfferWallConfig default builder setup (isSandbox=$isSandbox)")
             }
 
             val config = builder.build()
@@ -88,7 +95,7 @@ object PubScaleEngine {
                 object : OfferWallInitListener {
                     override fun onInitSuccess() {
                         isEngineReady = true
-                        Log.d(TAG, "PubScale Offerwall initialized (appId=$appId, sandbox=$isSandbox).")
+                        Log.d(TAG, "PubScale Offerwall SDK initialized successfully (appId=$appId).")
                     }
 
                     override fun onInitFailed(error: InitError) {
@@ -99,33 +106,36 @@ object PubScaleEngine {
             )
         } catch (e: Exception) {
             isEngineReady = false
-            Log.w(TAG, "Safe fallback triggered during PubScale OfferWall.init: ${e.message}")
+            Log.w(TAG, "Exception during PubScale OfferWall.init: ${e.message}")
         }
     }
 
     /**
-     * Launches the PubScale Offerwall screen with reward callback handling.
+     * Launches the real PubScale Offerwall screen.
+     * If launch fails or is not ready, shows the exact real error in a Toast.
      */
     @JvmStatic
     fun openOfferwall(activity: Activity, userId: String) {
         if (activity.isFinishing || activity.isDestroyed) return
 
-        if (!isEngineReady && !OfferWall.isSDKInitialized) {
-            Toast.makeText(
-                activity,
-                "Offerwall tasks are loading, please try again in a moment.",
-                Toast.LENGTH_SHORT
-            ).show()
-            // Re-attempt initialization in the background if enabled
+        val resolvedUserId = userId.ifBlank {
+            lastUserId.ifBlank { com.cashindia.app.UserManager.getUserId(activity) }
+        }
+        lastUserId = resolvedUserId
+
+        if (!OfferWall.isSDKInitialized) {
+            // Re-attempt init if needed and inform user of real status
             if (lastEnabled) {
                 initEngine(
                     context = activity.applicationContext,
                     appId = lastAppId,
-                    userId = userId.ifBlank { lastUserId },
+                    userId = lastUserId,
                     isSandbox = isSandboxMode,
                     isEnabled = true
                 )
             }
+            val statusMsg = "PubScale Offerwall is initializing. (Status: Pending or Connecting). Please try again in a few seconds."
+            Toast.makeText(activity, statusMsg, Toast.LENGTH_LONG).show()
             return
         }
 
@@ -142,30 +152,32 @@ object PubScaleEngine {
                     }
 
                     override fun onRewardClaimed(reward: Reward) {
-                        val modeLabel = if (isSandboxMode) "Test Reward" else "Reward"
+                        val coins = reward.amount.toInt().coerceAtLeast(1)
+                        val title = "PubScale: ${reward.currency.ifBlank { "Offerwall Task" }}"
+                        rewardCreditListener?.invoke(coins, title)
                         Toast.makeText(
                             activity,
-                            "$modeLabel claimed: ${reward.amount.toInt()} ${reward.currency}",
+                            "+$coins Coins credited from PubScale Offerwall!",
                             Toast.LENGTH_LONG
                         ).show()
                     }
 
                     override fun onFailed(message: String) {
-                        Log.w(TAG, "PubScale Offerwall launch failed: $message")
+                        Log.w(TAG, "PubScale OfferWall.launch onFailed: $message")
                         Toast.makeText(
                             activity,
-                            "Offerwall tasks are loading, please try again in a moment.",
-                            Toast.LENGTH_SHORT
+                            "PubScale Offerwall: $message",
+                            Toast.LENGTH_LONG
                         ).show()
                     }
                 }
             )
         } catch (e: Exception) {
-            Log.w(TAG, "Error launching PubScale Offerwall: ${e.message}")
+            Log.w(TAG, "PubScale launch exception: ${e.message}")
             Toast.makeText(
                 activity,
-                "Offerwall tasks are loading, please try again in a moment.",
-                Toast.LENGTH_SHORT
+                "PubScale Offerwall Error: ${e.localizedMessage ?: e.message}",
+                Toast.LENGTH_LONG
             ).show()
         }
     }

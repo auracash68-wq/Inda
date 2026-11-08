@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,14 +48,25 @@ fun EarnScreen(
     uiState: CashIndiaUiState,
     onSelectFilter: (TaskFilter) -> Unit,
     onOpenSheet: (ActiveSheet) -> Unit,
-    currentUserId: String = "test_user_01",
+    onCreditCoins: (Int, String) -> Unit = { _, _ -> },
+    currentUserId: String = "",
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val effectiveUserId = currentUserId.ifBlank { com.cashindia.app.UserManager.getUserId(context) }
     val scrollState = rememberScrollState()
     val filteredTasks = when (uiState.selectedTaskFilter) {
         TaskFilter.ALL_TASKS -> uiState.allAppTasks
         TaskFilter.EASY_INSTALL -> uiState.allAppTasks.filter { it.isEasyInstall }
+    }
+
+    DisposableEffect(Unit) {
+        PubScaleEngine.setRewardCreditListener { coins, title ->
+            onCreditCoins(coins, title)
+        }
+        onDispose {
+            PubScaleEngine.setRewardCreditListener(null)
+        }
     }
 
     Column(
@@ -79,7 +91,7 @@ fun EarnScreen(
             onPlayNowClick = {
                 val activity = context as? Activity
                 if (activity != null) {
-                    PlaytimeEngine.openPlaytimeCatalog(activity, currentUserId)
+                    PlaytimeEngine.openPlaytimeCatalog(activity, effectiveUserId)
                 }
             }
         )
@@ -196,7 +208,7 @@ fun EarnScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        // Task Cards (Connected to PubScaleEngine Offerwall)
+        // Task Cards (Connected directly to real PubScaleEngine Offerwall)
         Column(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
@@ -206,7 +218,7 @@ fun EarnScreen(
                     onEarnClick = {
                         val activity = context as? Activity
                         if (activity != null) {
-                            PubScaleEngine.openOfferwall(activity, currentUserId)
+                            PubScaleEngine.openOfferwall(activity, effectiveUserId)
                         }
                     }
                 )

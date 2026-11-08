@@ -255,7 +255,7 @@ fun AppTaskCard(
     modifier: Modifier = Modifier
 ) {
     CashIndiaCardSurface(
-        modifier = modifier,
+        modifier = modifier.clickable { onEarnClick() },
         cornerRadius = 16.dp,
         leftTricolorStrip = true
     ) {

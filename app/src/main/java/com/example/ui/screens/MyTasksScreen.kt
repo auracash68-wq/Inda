@@ -43,6 +43,7 @@ import com.example.ui.theme.MainScreenBackground
 import com.example.ui.theme.OrangeHorizontalGradient
 import com.example.ui.theme.PrimaryNavy
 import com.example.ui.theme.PureWhite
+import com.example.ui.theme.SecondaryText
 import com.example.viewmodel.CashIndiaUiState
 
 @Composable
@@ -152,23 +153,41 @@ fun MyTasksScreen(
 
         if (uiState.selectedMyTasksSegment == MyTasksSegment.ONGOING_PENDING) {
             // D. Ongoing Task Cards
-            Column(
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                uiState.ongoingTasks.forEach { task ->
-                    OngoingTaskStatusCard(
-                        task = task,
-                        onClick = {
-                            onOpenSheet(
-                                ActiveSheet.OfferLaunch(
-                                    title = task.title,
-                                    provider = "Live Task Telemetry",
-                                    rewardText = task.statusText,
-                                    instructions = "${task.subtitle}. Keep VPN off during verification."
-                                )
-                            )
-                        }
+            if (uiState.ongoingTasks.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 24.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "No ongoing tasks yet. Start an App Task or Survey to earn coins!",
+                        fontFamily = CashIndiaFontFamily,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 13.5.sp,
+                        color = SecondaryText,
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
                     )
+                }
+            } else {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    uiState.ongoingTasks.forEach { task ->
+                        OngoingTaskStatusCard(
+                            task = task,
+                            onClick = {
+                                onOpenSheet(
+                                    ActiveSheet.OfferLaunch(
+                                        title = task.title,
+                                        provider = "Live Task Telemetry",
+                                        rewardText = task.statusText,
+                                        instructions = "${task.subtitle}. Keep VPN off during verification."
+                                    )
+                                )
+                            }
+                        )
+                    }
                 }
             }
 
@@ -186,11 +205,29 @@ fun MyTasksScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            uiState.completedTasks.forEach { completedTask ->
-                TaskStatusCard(task = completedTask)
+        if (uiState.completedTasks.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 20.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "No completed tasks yet. Completed offers will be recorded here.",
+                    fontFamily = CashIndiaFontFamily,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 13.5.sp,
+                    color = SecondaryText,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                )
+            }
+        } else {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                uiState.completedTasks.forEach { completedTask ->
+                    TaskStatusCard(task = completedTask)
+                }
             }
         }
 

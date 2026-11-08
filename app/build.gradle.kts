@@ -1,87 +1,8 @@
-import com.android.build.api.instrumentation.AsmClassVisitorFactory
-import com.android.build.api.instrumentation.ClassContext
-import com.android.build.api.instrumentation.ClassData
-import com.android.build.api.instrumentation.InstrumentationParameters
-import com.android.build.api.instrumentation.InstrumentationScope
-import org.objectweb.asm.ClassVisitor
-import org.objectweb.asm.MethodVisitor
-import org.objectweb.asm.Opcodes
-
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.google.devtools.ksp)
   alias(libs.plugins.secrets)
-}
-
-abstract class PubScaleLogSanitizerFactory : AsmClassVisitorFactory<InstrumentationParameters.None> {
-  override fun createClassVisitor(
-    classContext: ClassContext,
-    nextClassVisitor: ClassVisitor
-  ): ClassVisitor {
-    return object : ClassVisitor(Opcodes.ASM9, nextClassVisitor) {
-      override fun visitMethod(
-        access: Int,
-        name: String?,
-        descriptor: String?,
-        signature: String?,
-        exceptions: Array<out String>?
-      ): MethodVisitor {
-        val mv = super.visitMethod(access, name, descriptor, signature, exceptions)
-        return object : MethodVisitor(Opcodes.ASM9, mv) {
-          override fun visitTypeInsn(opcode: Int, type: String?) {
-            if (opcode == Opcodes.NEW && type == "android/media/MediaDrm") {
-              super.visitTypeInsn(Opcodes.NEW, "java/lang/Object")
-            } else {
-              super.visitTypeInsn(opcode, type)
-            }
-          }
-
-          override fun visitMethodInsn(
-            opcode: Int,
-            owner: String?,
-            name: String?,
-            descriptor: String?,
-            isInterface: Boolean
-          ) {
-            if (owner == "android/media/MediaDrm") {
-              if (opcode == Opcodes.INVOKESPECIAL && name == "<init>" && descriptor == "(Ljava/util/UUID;)V") {
-                super.visitInsn(Opcodes.POP)
-                super.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false)
-                return
-              }
-              if (opcode == Opcodes.INVOKEVIRTUAL && name == "getPropertyByteArray" && descriptor == "(Ljava/lang/String;)[B") {
-                super.visitInsn(Opcodes.POP2)
-                super.visitInsn(Opcodes.ACONST_NULL)
-                return
-              }
-            }
-            val sanitizedName =
-              if (opcode == Opcodes.INVOKESTATIC && owner == "android/util/Log" && name == "e") {
-                "d"
-              } else {
-                name
-              }
-            super.visitMethodInsn(opcode, owner, sanitizedName, descriptor, isInterface)
-          }
-        }
-      }
-    }
-  }
-
-  override fun isInstrumentable(classData: ClassData): Boolean {
-    return classData.className.startsWith("com.pubscale.") ||
-      classData.className.startsWith("io.adjoe.")
-  }
-}
-
-androidComponents {
-  onVariants { variant ->
-    variant.instrumentation.transformClassesWith(
-      PubScaleLogSanitizerFactory::class.java,
-      InstrumentationScope.ALL
-    ) {}
-  }
 }
 
 android {
@@ -157,19 +78,11 @@ secrets {
   ignoreList.add("FIREBASE_APPCHECK_DEBUG_TOKEN")
 }
 
-// Some unused dependencies are commented out below instead of being removed.
-// This makes it easy to add them back in the future if needed.
 dependencies {
   implementation(platform(libs.androidx.compose.bom))
   implementation("io.adjoe:adjoe-sdk-android:4.5.3")
   implementation("com.pubscale.sdkone:offerwall:1.0.8")
-  // implementation(platform(libs.firebase.bom))
-  // implementation(libs.accompanist.permissions)
   implementation(libs.androidx.activity.compose)
-  // implementation(libs.androidx.camera.camera2)
-  // implementation(libs.androidx.camera.core)
-  // implementation(libs.androidx.camera.lifecycle)
-  // implementation(libs.androidx.camera.view)
   implementation(libs.androidx.compose.material.icons.core)
   implementation(libs.androidx.compose.material.icons.extended)
   implementation(libs.androidx.compose.material3)
@@ -177,34 +90,13 @@ dependencies {
   implementation(libs.androidx.compose.ui.graphics)
   implementation(libs.androidx.compose.ui.tooling.preview)
   implementation(libs.androidx.core.ktx)
-  // implementation(libs.androidx.datastore.preferences)
   implementation(libs.androidx.lifecycle.runtime.compose)
   implementation(libs.androidx.lifecycle.runtime.ktx)
   implementation(libs.androidx.lifecycle.viewmodel.compose)
   implementation(libs.androidx.navigation.compose)
-  // implementation(libs.androidx.room.ktx)
-  // implementation(libs.androidx.room.runtime)
-  // implementation(libs.coil.compose)
-  // implementation(libs.converter.moshi)
-  // implementation(libs.firebase.ai)
-  // Uncomment to use Firestore:
-  // implementation(libs.firebase.firestore)
-
-  // Uncomment ALL FOUR of the following dependencies together to use Firebase Auth and Google
-  // Sign-In via Credential Manager:
-  // implementation(libs.firebase.auth)
-  // implementation(libs.androidx.credentials)
-  // implementation(libs.androidx.credentials.play.services)
-  // implementation(libs.googleid)
-  // implementation(libs.firebase.appcheck.recaptcha)
-  // implementation(libs.firebase.appcheck.debug)
   implementation(libs.kotlinx.coroutines.android)
   implementation(libs.kotlinx.coroutines.core)
-  // implementation(libs.logging.interceptor)
-  // implementation(libs.moshi.kotlin)
-  // implementation(libs.okhttp)
-  // implementation(libs.play.services.location)
-  // implementation(libs.retrofit)
+
   testImplementation(libs.androidx.compose.ui.test.junit4)
   testImplementation(libs.androidx.core)
   testImplementation(libs.androidx.junit)
@@ -218,6 +110,4 @@ dependencies {
   androidTestImplementation(libs.androidx.runner)
   debugImplementation(libs.androidx.compose.ui.test.manifest)
   debugImplementation(libs.androidx.compose.ui.tooling)
-  // "ksp"(libs.androidx.room.compiler)
-  // "ksp"(libs.moshi.kotlin.codegen)
 }
