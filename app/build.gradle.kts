@@ -1,3 +1,12 @@
+import com.android.build.api.instrumentation.AsmClassVisitorFactory
+import com.android.build.api.instrumentation.ClassContext
+import com.android.build.api.instrumentation.ClassData
+import com.android.build.api.instrumentation.InstrumentationParameters
+import com.android.build.api.instrumentation.InstrumentationScope
+import org.objectweb.asm.ClassVisitor
+import org.objectweb.asm.MethodVisitor
+import org.objectweb.asm.Opcodes
+
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.compose)
@@ -5,12 +14,82 @@ plugins {
   alias(libs.plugins.secrets)
 }
 
+abstract class PubScaleLogSanitizerFactory : AsmClassVisitorFactory<InstrumentationParameters.None> {
+  override fun createClassVisitor(
+    classContext: ClassContext,
+    nextClassVisitor: ClassVisitor
+  ): ClassVisitor {
+    return object : ClassVisitor(Opcodes.ASM9, nextClassVisitor) {
+      override fun visitMethod(
+        access: Int,
+        name: String?,
+        descriptor: String?,
+        signature: String?,
+        exceptions: Array<out String>?
+      ): MethodVisitor {
+        val mv = super.visitMethod(access, name, descriptor, signature, exceptions)
+        return object : MethodVisitor(Opcodes.ASM9, mv) {
+          override fun visitTypeInsn(opcode: Int, type: String?) {
+            if (opcode == Opcodes.NEW && type == "android/media/MediaDrm") {
+              super.visitTypeInsn(Opcodes.NEW, "java/lang/Object")
+            } else {
+              super.visitTypeInsn(opcode, type)
+            }
+          }
+
+          override fun visitMethodInsn(
+            opcode: Int,
+            owner: String?,
+            name: String?,
+            descriptor: String?,
+            isInterface: Boolean
+          ) {
+            if (owner == "android/media/MediaDrm") {
+              if (opcode == Opcodes.INVOKESPECIAL && name == "<init>" && descriptor == "(Ljava/util/UUID;)V") {
+                super.visitInsn(Opcodes.POP)
+                super.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false)
+                return
+              }
+              if (opcode == Opcodes.INVOKEVIRTUAL && name == "getPropertyByteArray" && descriptor == "(Ljava/lang/String;)[B") {
+                super.visitInsn(Opcodes.POP2)
+                super.visitInsn(Opcodes.ACONST_NULL)
+                return
+              }
+            }
+            val sanitizedName =
+              if (opcode == Opcodes.INVOKESTATIC && owner == "android/util/Log" && name == "e") {
+                "d"
+              } else {
+                name
+              }
+            super.visitMethodInsn(opcode, owner, sanitizedName, descriptor, isInterface)
+          }
+        }
+      }
+    }
+  }
+
+  override fun isInstrumentable(classData: ClassData): Boolean {
+    return classData.className.startsWith("com.pubscale.") ||
+      classData.className.startsWith("io.adjoe.")
+  }
+}
+
+androidComponents {
+  onVariants { variant ->
+    variant.instrumentation.transformClassesWith(
+      PubScaleLogSanitizerFactory::class.java,
+      InstrumentationScope.ALL
+    ) {}
+  }
+}
+
 android {
   namespace = "com.example"
   compileSdk { version = release(36) { minorApiLevel = 1 } }
 
   defaultConfig {
-    applicationId = "com.aistudio.cashindia.rwdxkp"
+    applicationId = "com.cashindia.SahidHosen.app"
     minSdk = 24
     targetSdk = 36
     versionCode = 1
@@ -61,6 +140,9 @@ android {
     buildConfig = true
   }
   testOptions { unitTests { isIncludeAndroidResources = true } }
+  androidResources {
+    noCompress += "html"
+  }
   dependenciesInfo {
     includeInApk = false
     includeInBundle = true
@@ -79,6 +161,8 @@ secrets {
 // This makes it easy to add them back in the future if needed.
 dependencies {
   implementation(platform(libs.androidx.compose.bom))
+  implementation("io.adjoe:adjoe-sdk-android:4.5.3")
+  implementation("com.pubscale.sdkone:offerwall:1.0.8")
   // implementation(platform(libs.firebase.bom))
   // implementation(libs.accompanist.permissions)
   implementation(libs.androidx.activity.compose)

@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.testTag
@@ -52,6 +51,7 @@ import com.example.ui.theme.MutedText
 import com.example.ui.theme.PrimaryGreen
 import com.example.ui.theme.PrimaryNavy
 import com.example.ui.theme.PureWhite
+import com.example.ui.theme.SecondaryText
 import com.example.viewmodel.CashIndiaUiState
 
 @Composable
@@ -70,39 +70,39 @@ fun MyWalletScreen(
             .fillMaxSize()
             .background(MainScreenBackground)
             .verticalScroll(scrollState)
-            .padding(horizontal = 16.dp, vertical = 6.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
             .testTag("my_wallet_screen")
     ) {
         // A. Header
         CoinBalanceHeader(
             isEarnHomeHeader = false,
             title = "My Wallet",
-            subtitle = "24/7 Instant UPI Cashout",
+            subtitle = "Fast & Easy Withdrawals",
             badgeText = "100% Secure",
             isSecurityBadge = true
         )
 
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         // B. Available Balance Card
         CashIndiaCardSurface(
-            cornerRadius = 18.dp,
+            cornerRadius = 16.dp,
             topTricolorStrip = true
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 14.dp, vertical = 10.dp),
+                    .padding(horizontal = 16.dp, vertical = 14.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = "Available Balance",
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 16.5.sp,
-                    color = PrimaryNavy
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 13.5.sp,
+                    color = SecondaryText
                 )
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     modifier = Modifier.height(IntrinsicSize.Min),
                     verticalAlignment = Alignment.CenterVertically,
@@ -111,12 +111,12 @@ fun MyWalletScreen(
                     Text(
                         text = "₹${String.format("%.2f", uiState.walletBalanceRupees)}",
                         fontFamily = CashIndiaFontFamily,
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 33.sp,
-                        lineHeight = 36.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 28.sp,
+                        lineHeight = 32.sp,
                         color = PrimaryGreen
                     )
-                    Spacer(modifier = Modifier.width(12.dp))
+                    Spacer(modifier = Modifier.width(14.dp))
                     Box(
                         modifier = Modifier
                             .width(1.dp)
@@ -124,60 +124,59 @@ fun MyWalletScreen(
                             .padding(vertical = 3.dp)
                             .background(DividerColor)
                     )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    // Yellow/gold rounded coin capsule
+                    Spacer(modifier = Modifier.width(14.dp))
                     Row(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(20.dp))
+                            .clip(RoundedCornerShape(18.dp))
                             .background(
                                 brush = Brush.horizontalGradient(
                                     listOf(GoldCapsuleStart, GoldCapsuleEnd)
                                 )
                             )
-                            .padding(horizontal = 13.dp, vertical = 6.dp),
+                            .padding(horizontal = 12.dp, vertical = 6.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        GoldCoinStackIcon(size = 24.dp)
-                        Spacer(modifier = Modifier.width(7.dp))
+                        GoldCoinStackIcon(size = 20.dp)
+                        Spacer(modifier = Modifier.width(6.dp))
                         Text(
                             text = "4,500 Coins",
                             fontFamily = CashIndiaFontFamily,
-                            fontWeight = FontWeight.ExtraBold,
-                            fontSize = 15.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 14.sp,
                             color = PrimaryNavy
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(1.dp)
                         .background(DividerColor)
                 )
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "100 Coins = ₹1.00 • Instant Transfer",
+                    text = "100 Coins = ₹1",
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
+                    fontWeight = FontWeight.Medium,
                     fontSize = 13.sp,
-                    color = PrimaryNavy
+                    color = SecondaryText
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(18.dp))
 
-        // C. Select Withdrawal Method
+        // C. Withdrawal Method
         Text(
-            text = "Select Withdrawal Method",
+            text = "Withdrawal Method",
             fontFamily = CashIndiaFontFamily,
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 17.5.sp,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.5.sp,
             color = PrimaryNavy
         )
 
-        Spacer(modifier = Modifier.height(9.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -193,25 +192,23 @@ fun MyWalletScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(18.dp))
 
         // D. Enter UPI ID
         Text(
             text = "Enter UPI ID",
             fontFamily = CashIndiaFontFamily,
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 15.5.sp,
             color = PrimaryNavy
         )
 
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
-        // Wide rounded input field with placeholder example@okaxis and right-side Verified indicator
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(44.dp)
-                .shadow(1.5.dp, RoundedCornerShape(22.dp))
                 .clip(RoundedCornerShape(22.dp))
                 .background(PureWhite)
                 .border(1.dp, CardBorderColor, RoundedCornerShape(22.dp))
@@ -228,8 +225,8 @@ fun MyWalletScreen(
                         Text(
                             text = "example@okaxis",
                             fontFamily = CashIndiaFontFamily,
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 14.5.sp,
                             color = MutedText
                         )
                     }
@@ -239,8 +236,8 @@ fun MyWalletScreen(
                         singleLine = true,
                         textStyle = TextStyle(
                             fontFamily = CashIndiaFontFamily,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 14.5.sp,
                             color = PrimaryNavy
                         ),
                         cursorBrush = SolidColor(PrimaryNavy),
@@ -254,13 +251,13 @@ fun MyWalletScreen(
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        ShieldVerifiedIcon(size = 18.dp)
+                        ShieldVerifiedIcon(size = 17.dp)
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = "Verified",
                             fontFamily = CashIndiaFontFamily,
-                            fontWeight = FontWeight.ExtraBold,
-                            fontSize = 13.5.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 12.5.sp,
                             color = PrimaryGreen
                         )
                     }
@@ -268,7 +265,7 @@ fun MyWalletScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         // E. Withdrawal Amount Selection (₹10 | ₹20 | ₹50 | ₹100)
         Row(
@@ -285,69 +282,68 @@ fun MyWalletScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(11.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         // F. Main Withdrawal Button
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp)
-                .shadow(3.dp, RoundedCornerShape(24.dp))
-                .clip(RoundedCornerShape(24.dp))
+                .height(46.dp)
+                .clip(RoundedCornerShape(23.dp))
                 .background(brush = GreenButtonGradient)
                 .clickable { onWithdrawClick() }
                 .testTag("withdraw_submit_button"),
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Withdraw ₹${uiState.selectedWithdrawalAmount} Instantly",
+                text = "Withdraw ₹${uiState.selectedWithdrawalAmount}",
                 fontFamily = CashIndiaFontFamily,
-                fontWeight = FontWeight.ExtraBold,
-                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 15.5.sp,
                 color = PureWhite
             )
         }
 
         if (uiState.statusMessage != null) {
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(12.dp))
                     .background(InfoBannerBlueBg)
-                    .padding(horizontal = 12.dp, vertical = 7.dp)
+                    .padding(horizontal = 12.dp, vertical = 8.dp)
             ) {
                 Text(
                     text = uiState.statusMessage,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 12.5.sp,
                     color = PrimaryNavy
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(13.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
-        // G. Recent Withdrawals (Bank Proof)
+        // G. Recent Withdrawals
         Text(
-            text = "Recent Withdrawals (Bank Proof)",
+            text = "Recent Withdrawals",
             fontFamily = CashIndiaFontFamily,
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 17.5.sp,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.5.sp,
             color = PrimaryNavy
         )
 
-        Spacer(modifier = Modifier.height(9.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(9.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             uiState.recentWithdrawals.forEach { tx ->
                 TransactionCard(transaction = tx)
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }

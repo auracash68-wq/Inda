@@ -1,6 +1,5 @@
 package com.example.ui.components
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -27,7 +26,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.ChatBubble
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -49,7 +47,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.R
@@ -71,7 +68,6 @@ import com.example.ui.theme.PendingOrange
 import com.example.ui.theme.PrimaryGreen
 import com.example.ui.theme.PrimaryNavy
 import com.example.ui.theme.PureWhite
-import com.example.ui.theme.ReferralYellow
 import com.example.ui.theme.SaffronOrange
 import com.example.ui.theme.SecondaryText
 import com.example.ui.theme.SuccessCapsuleDarkText
@@ -85,69 +81,64 @@ fun RewardCard(
 ) {
     CashIndiaCardSurface(
         modifier = modifier,
-        cornerRadius = 18.dp,
+        cornerRadius = 16.dp,
         leftTricolorStrip = true
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
-                .padding(horizontal = 12.dp, vertical = 12.dp),
+                .padding(horizontal = 14.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Left: adjoe Playtime game controller illustration
             Image(
                 painter = painterResource(id = R.drawable.img_adjoe_controller),
-                contentDescription = "adjoe Playtime Game Controller",
+                contentDescription = "adjoe Playtime",
                 modifier = Modifier
-                    .width(104.dp)
-                    .height(106.dp),
+                    .width(92.dp)
+                    .height(94.dp),
                 contentScale = ContentScale.Fit
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            // Vertical divider
-            Box(
-                modifier = Modifier
-                    .width(1.2.dp)
-                    .fillMaxHeight()
-                    .padding(vertical = 4.dp)
-                    .background(Color(0xFF9EA9C4))
             )
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            // Right: Heading, supporting text, and large orange gradient button
+            Box(
+                modifier = Modifier
+                    .width(1.dp)
+                    .fillMaxHeight()
+                    .padding(vertical = 4.dp)
+                    .background(DividerColor)
+            )
+
+            Spacer(modifier = Modifier.width(14.dp))
+
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Play Games &\nEarn Every Minute",
+                    text = "Play & Earn",
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 19.sp,
-                    lineHeight = 23.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    lineHeight = 22.sp,
                     color = PrimaryNavy
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "No hard levels • Instant coins per minute",
+                    text = "Earn Coins Per Minute",
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 11.5.sp,
-                    lineHeight = 14.sp,
-                    color = SecondaryText,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 13.sp,
+                    lineHeight = 17.sp,
+                    color = SecondaryText
                 )
-                Spacer(modifier = Modifier.height(9.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(40.dp)
-                        .clip(RoundedCornerShape(22.dp))
+                        .height(38.dp)
+                        .clip(RoundedCornerShape(19.dp))
                         .background(brush = OrangeButtonGradient)
                         .clickable { onPlayNowClick() }
                         .testTag("play_now_button"),
@@ -156,8 +147,8 @@ fun RewardCard(
                     Text(
                         text = "Play Now",
                         fontFamily = CashIndiaFontFamily,
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.5.sp,
                         color = PureWhite
                     )
                 }
@@ -179,73 +170,67 @@ fun SurveyCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 11.dp, vertical = 11.dp)
+                .padding(horizontal = 12.dp, vertical = 12.dp)
         ) {
-            // Provider Row
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                CpxResearchLogoIcon(size = 21.dp)
-                Spacer(modifier = Modifier.width(7.dp))
+                CpxResearchLogoIcon(size = 19.dp)
+                Spacer(modifier = Modifier.width(6.dp))
                 Text(
                     text = survey.providerName,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 14.5.sp,
-                    color = PrimaryNavy,
-                    maxLines = 1
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 14.sp,
+                    color = PrimaryNavy
                 )
             }
             Spacer(modifier = Modifier.height(6.dp))
-            // Duration Row
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Schedule,
                     contentDescription = "Survey Duration",
-                    tint = PrimaryNavy,
-                    modifier = Modifier.size(19.dp)
+                    tint = SecondaryText,
+                    modifier = Modifier.size(16.dp)
                 )
-                Spacer(modifier = Modifier.width(6.dp))
+                Spacer(modifier = Modifier.width(5.dp))
                 Text(
                     text = survey.durationText,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 14.5.sp,
-                    color = PrimaryNavy
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 13.sp,
+                    color = SecondaryText
                 )
             }
-            Spacer(modifier = Modifier.height(8.dp))
-            // Green reward capsule
+            Spacer(modifier = Modifier.height(10.dp))
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(31.dp)
-                    .clip(RoundedCornerShape(16.dp))
+                    .height(30.dp)
+                    .clip(RoundedCornerShape(15.dp))
                     .background(brush = GreenButtonGradient),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = survey.rewardText,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 13.sp,
-                    color = PureWhite,
-                    maxLines = 1
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 12.5.sp,
+                    color = PureWhite
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
-            // Outlined Navy Start Survey Button
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(33.dp)
-                    .clip(RoundedCornerShape(18.dp))
+                    .height(34.dp)
+                    .clip(RoundedCornerShape(17.dp))
                     .border(
-                        width = 1.4.dp,
+                        width = 1.2.dp,
                         color = PrimaryNavy,
-                        shape = RoundedCornerShape(18.dp)
+                        shape = RoundedCornerShape(17.dp)
                     )
                     .clickable { onStartSurvey() }
                     .testTag("start_survey_${survey.id}"),
@@ -254,7 +239,7 @@ fun SurveyCard(
                 Text(
                     text = "Start Survey",
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
+                    fontWeight = FontWeight.SemiBold,
                     fontSize = 13.5.sp,
                     color = PrimaryNavy
                 )
@@ -277,56 +262,53 @@ fun AppTaskCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 10.dp, vertical = 9.dp),
+                .padding(horizontal = 12.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = painterResource(id = task.iconRes),
                 contentDescription = task.title,
                 modifier = Modifier
-                    .size(52.dp)
+                    .size(48.dp)
                     .clip(RoundedCornerShape(12.dp)),
                 contentScale = ContentScale.Fit
             )
-            Spacer(modifier = Modifier.width(10.dp))
+            Spacer(modifier = Modifier.width(12.dp))
             Column(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
                     text = task.title,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 16.sp,
-                    color = PrimaryNavy,
-                    maxLines = 1
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 15.5.sp,
+                    color = PrimaryNavy
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = task.description,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 12.5.sp,
-                    color = SecondaryText,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 13.sp,
+                    color = SecondaryText
                 )
             }
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(10.dp))
             Box(
                 modifier = Modifier
-                    .height(36.dp)
-                    .clip(RoundedCornerShape(18.dp))
+                    .height(34.dp)
+                    .clip(RoundedCornerShape(17.dp))
                     .background(brush = GreenButtonGradient)
                     .clickable { onEarnClick() }
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = 15.dp)
                     .testTag("task_earn_${task.id}"),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = task.rewardText,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 13.5.sp,
                     color = PureWhite
                 )
             }
@@ -342,14 +324,14 @@ fun EarningsSummaryCard(
 ) {
     CashIndiaCardSurface(
         modifier = modifier,
-        cornerRadius = 18.dp,
+        cornerRadius = 16.dp,
         topTricolorStrip = true
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
-                .padding(vertical = 12.dp, horizontal = 8.dp),
+                .padding(vertical = 14.dp, horizontal = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Left Column: Today's Credited
@@ -360,42 +342,35 @@ fun EarningsSummaryCard(
                 Text(
                     text = "Today's Credited",
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 14.5.sp,
-                    color = PrimaryNavy
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 13.sp,
+                    color = SecondaryText
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                Row(
-                    verticalAlignment = Alignment.Bottom
-                ) {
-                    val split = todaysCredited.split(" ", limit = 2)
+                val split = todaysCredited.split(" ", limit = 2)
+                Text(
+                    text = split.getOrElse(0) { todaysCredited },
+                    fontFamily = CashIndiaFontFamily,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    color = SuccessGreen
+                )
+                if (split.size > 1) {
                     Text(
-                        text = split.getOrElse(0) { todaysCredited },
+                        text = split[1],
                         fontFamily = CashIndiaFontFamily,
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 19.sp,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 12.sp,
                         color = SuccessGreen
                     )
-                    if (split.size > 1) {
-                        Spacer(modifier = Modifier.width(3.dp))
-                        Text(
-                            text = split[1],
-                            fontFamily = CashIndiaFontFamily,
-                            fontWeight = FontWeight.ExtraBold,
-                            fontSize = 13.5.sp,
-                            color = SuccessGreen,
-                            modifier = Modifier.padding(bottom = 1.dp)
-                        )
-                    }
                 }
             }
 
-            // Vertical Divider
             Box(
                 modifier = Modifier
                     .width(1.dp)
                     .fillMaxHeight()
-                    .padding(vertical = 2.dp)
+                    .padding(vertical = 4.dp)
                     .background(DividerColor)
             )
 
@@ -407,33 +382,27 @@ fun EarningsSummaryCard(
                 Text(
                     text = "Pending Verification",
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 14.5.sp,
-                    color = PrimaryNavy
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 13.sp,
+                    color = SecondaryText
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                Row(
-                    verticalAlignment = Alignment.Bottom
-                ) {
-                    val split = pendingVerification.split(" ", limit = 2)
+                val split = pendingVerification.split(" ", limit = 2)
+                Text(
+                    text = split.getOrElse(0) { pendingVerification },
+                    fontFamily = CashIndiaFontFamily,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    color = PendingOrange
+                )
+                if (split.size > 1) {
                     Text(
-                        text = split.getOrElse(0) { pendingVerification },
+                        text = split[1],
                         fontFamily = CashIndiaFontFamily,
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 19.sp,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 12.sp,
                         color = PendingOrange
                     )
-                    if (split.size > 1) {
-                        Spacer(modifier = Modifier.width(3.dp))
-                        Text(
-                            text = split[1],
-                            fontFamily = CashIndiaFontFamily,
-                            fontWeight = FontWeight.ExtraBold,
-                            fontSize = 14.sp,
-                            color = PendingOrange,
-                            modifier = Modifier.padding(bottom = 1.dp)
-                        )
-                    }
                 }
             }
         }
@@ -454,15 +423,14 @@ fun OngoingTaskStatusCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 10.dp, vertical = 10.dp),
+                .padding(horizontal = 12.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = painterResource(id = task.iconRes),
                 contentDescription = task.title,
                 modifier = Modifier
-                    .width(62.dp)
-                    .height(64.dp)
+                    .size(54.dp)
                     .clip(RoundedCornerShape(10.dp)),
                 contentScale = ContentScale.Fit
             )
@@ -473,29 +441,27 @@ fun OngoingTaskStatusCard(
                 Text(
                     text = task.title,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
+                    fontWeight = FontWeight.SemiBold,
                     fontSize = 15.5.sp,
-                    color = PrimaryNavy,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    color = PrimaryNavy
                 )
                 if (task.progressFraction != null && task.progressLabel != null) {
-                    Spacer(modifier = Modifier.height(5.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Box(
                             modifier = Modifier
                                 .weight(1f)
-                                .height(8.dp)
-                                .clip(RoundedCornerShape(4.dp))
-                                .background(Color(0xFFE2E8F2))
+                                .height(6.dp)
+                                .clip(RoundedCornerShape(3.dp))
+                                .background(Color(0xFFE2E8F0))
                         ) {
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth(task.progressFraction)
                                     .fillMaxHeight()
-                                    .clip(RoundedCornerShape(4.dp))
+                                    .clip(RoundedCornerShape(3.dp))
                                     .background(SaffronOrange)
                             )
                         }
@@ -503,49 +469,45 @@ fun OngoingTaskStatusCard(
                         Text(
                             text = task.progressLabel,
                             fontFamily = CashIndiaFontFamily,
-                            fontWeight = FontWeight.ExtraBold,
+                            fontWeight = FontWeight.SemiBold,
                             fontSize = 12.sp,
                             color = PrimaryNavy
                         )
                     }
-                    Spacer(modifier = Modifier.height(3.dp))
+                    Spacer(modifier = Modifier.height(4.dp))
                 } else {
-                    Spacer(modifier = Modifier.height(6.dp))
+                    Spacer(modifier = Modifier.height(4.dp))
                 }
                 Text(
                     text = task.subtitle,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp,
-                    color = SecondaryText,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.5.sp,
+                    color = SecondaryText
                 )
             }
-            Spacer(modifier = Modifier.width(6.dp))
-            // Orange outlined status capsule
+            Spacer(modifier = Modifier.width(8.dp))
             Row(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(18.dp))
+                    .clip(RoundedCornerShape(16.dp))
                     .background(PendingCapsuleBg)
-                    .border(1.2.dp, PendingCapsuleBorder, RoundedCornerShape(18.dp))
-                    .padding(horizontal = 9.dp, vertical = 6.dp),
+                    .border(1.dp, PendingCapsuleBorder, RoundedCornerShape(16.dp))
+                    .padding(horizontal = 9.dp, vertical = 5.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Schedule,
                     contentDescription = null,
                     tint = PendingCapsuleText,
-                    modifier = Modifier.size(15.dp)
+                    modifier = Modifier.size(14.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = task.statusText,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 11.5.sp,
-                    color = PendingCapsuleText,
-                    maxLines = 1
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 12.sp,
+                    color = PendingCapsuleText
                 )
             }
         }
@@ -565,64 +527,58 @@ fun TaskStatusCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 10.dp, vertical = 9.dp),
+                .padding(horizontal = 12.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = painterResource(id = task.iconRes),
                 contentDescription = task.title,
                 modifier = Modifier
-                    .width(66.dp)
-                    .height(58.dp),
+                    .width(56.dp)
+                    .height(50.dp),
                 contentScale = ContentScale.Fit
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(10.dp))
             Column(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
                     text = task.title,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
+                    fontWeight = FontWeight.SemiBold,
                     fontSize = 15.5.sp,
-                    color = PrimaryNavy,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    color = PrimaryNavy
                 )
                 Spacer(modifier = Modifier.height(3.dp))
                 Text(
                     text = task.description,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 11.5.sp,
-                    color = SecondaryText,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.5.sp,
+                    color = SecondaryText
                 )
             }
-            Spacer(modifier = Modifier.width(6.dp))
-            // Green success capsule with check icon
+            Spacer(modifier = Modifier.width(8.dp))
             Row(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(18.dp))
+                    .clip(RoundedCornerShape(16.dp))
                     .background(brush = GreenButtonGradient)
-                    .padding(horizontal = 10.dp, vertical = 7.dp),
+                    .padding(horizontal = 10.dp, vertical = 6.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     imageVector = Icons.Filled.Check,
                     contentDescription = null,
                     tint = PureWhite,
-                    modifier = Modifier.size(15.dp)
+                    modifier = Modifier.size(14.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = task.paidBadgeText,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
+                    fontWeight = FontWeight.SemiBold,
                     fontSize = 12.5.sp,
-                    color = PureWhite,
-                    maxLines = 1
+                    color = PureWhite
                 )
             }
         }
@@ -638,7 +594,7 @@ fun WithdrawalMethodCard(
 ) {
     Box(
         modifier = modifier
-            .height(106.dp)
+            .height(98.dp)
             .clickable { onSelect() }
             .testTag("withdrawal_method_${method.id}")
     ) {
@@ -647,40 +603,40 @@ fun WithdrawalMethodCard(
             shape = RoundedCornerShape(14.dp),
             color = PureWhite,
             border = BorderStroke(
-                width = if (isSelected) 2.dp else 1.dp,
+                width = if (isSelected) 1.8.dp else 1.dp,
                 color = if (isSelected) PrimaryGreen else CardBorderColor
             ),
-            shadowElevation = 2.dp
+            shadowElevation = 1.dp
         ) {
             when (method) {
                 WithdrawalMethod.UPI -> {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(horizontal = 6.dp, vertical = 6.dp),
+                            .padding(horizontal = 8.dp, vertical = 8.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.SpaceBetween
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.img_upi_logos),
-                            contentDescription = "UPI Google Pay PhonePe Paytm",
+                            contentDescription = "UPI",
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(54.dp),
+                                .height(46.dp),
                             contentScale = ContentScale.Fit
                         )
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(26.dp)
-                                .clip(RoundedCornerShape(13.dp))
+                                .height(24.dp)
+                                .clip(RoundedCornerShape(12.dp))
                                 .background(PrimaryGreen),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = "Instant UPI",
                                 fontFamily = CashIndiaFontFamily,
-                                fontWeight = FontWeight.ExtraBold,
+                                fontWeight = FontWeight.SemiBold,
                                 fontSize = 11.5.sp,
                                 color = PureWhite
                             )
@@ -692,22 +648,22 @@ fun WithdrawalMethodCard(
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(horizontal = 6.dp, vertical = 8.dp),
+                            .padding(horizontal = 8.dp, vertical = 8.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.img_google_play),
                             contentDescription = "Google Play Code",
-                            modifier = Modifier.size(44.dp),
+                            modifier = Modifier.size(38.dp),
                             contentScale = ContentScale.Fit
                         )
                         Spacer(modifier = Modifier.height(6.dp))
                         Text(
                             text = "Google Play\nCode",
                             fontFamily = CashIndiaFontFamily,
-                            fontWeight = FontWeight.ExtraBold,
-                            fontSize = 12.5.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 12.sp,
                             lineHeight = 14.sp,
                             color = PrimaryNavy,
                             textAlign = TextAlign.Center
@@ -719,7 +675,7 @@ fun WithdrawalMethodCard(
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(horizontal = 6.dp, vertical = 8.dp),
+                            .padding(horizontal = 8.dp, vertical = 8.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
@@ -727,16 +683,16 @@ fun WithdrawalMethodCard(
                             painter = painterResource(id = R.drawable.img_amazon_pay),
                             contentDescription = "Amazon Pay",
                             modifier = Modifier
-                                .width(68.dp)
-                                .height(48.dp),
+                                .width(60.dp)
+                                .height(42.dp),
                             contentScale = ContentScale.Fit
                         )
                         Spacer(modifier = Modifier.height(6.dp))
                         Text(
                             text = "Amazon Pay",
                             fontFamily = CashIndiaFontFamily,
-                            fontWeight = FontWeight.ExtraBold,
-                            fontSize = 12.5.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 12.sp,
                             color = PrimaryNavy,
                             textAlign = TextAlign.Center
                         )
@@ -745,13 +701,12 @@ fun WithdrawalMethodCard(
             }
         }
 
-        // Top-right green selected check indicator
         if (isSelected) {
             Box(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .offset(x = 4.dp, y = (-5).dp)
-                    .size(21.dp)
+                    .offset(x = 3.dp, y = (-4).dp)
+                    .size(20.dp)
                     .clip(CircleShape)
                     .background(PrimaryGreen)
                     .border(1.5.dp, PureWhite, CircleShape),
@@ -761,7 +716,7 @@ fun WithdrawalMethodCard(
                     imageVector = Icons.Filled.Check,
                     contentDescription = "Selected",
                     tint = PureWhite,
-                    modifier = Modifier.size(13.dp)
+                    modifier = Modifier.size(12.dp)
                 )
             }
         }
@@ -785,7 +740,7 @@ fun AmountSelectionButton(
                 } else {
                     Modifier
                         .background(PureWhite)
-                        .border(1.2.dp, Color(0xFF3E63B6), RoundedCornerShape(19.dp))
+                        .border(1.dp, CardBorderColor, RoundedCornerShape(19.dp))
                 }
             )
             .clickable { onSelect() }
@@ -795,8 +750,8 @@ fun AmountSelectionButton(
         Text(
             text = "₹$amount",
             fontFamily = CashIndiaFontFamily,
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 15.5.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 14.5.sp,
             color = if (isSelected) PureWhite else PrimaryNavy
         )
     }
@@ -815,13 +770,13 @@ fun TransactionCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 10.dp),
+                .padding(horizontal = 12.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (transaction.isUpiCheckIcon) {
                 Box(
                     modifier = Modifier
-                        .size(34.dp)
+                        .size(32.dp)
                         .clip(CircleShape)
                         .background(PrimaryGreen),
                     contentAlignment = Alignment.Center
@@ -830,14 +785,14 @@ fun TransactionCard(
                         imageVector = Icons.Filled.Check,
                         contentDescription = null,
                         tint = PureWhite,
-                        modifier = Modifier.size(21.dp)
+                        modifier = Modifier.size(19.dp)
                     )
                 }
             } else if (transaction.iconRes != null) {
                 Image(
                     painter = painterResource(id = transaction.iconRes),
                     contentDescription = transaction.title,
-                    modifier = Modifier.size(34.dp),
+                    modifier = Modifier.size(32.dp),
                     contentScale = ContentScale.Fit
                 )
             }
@@ -848,37 +803,32 @@ fun TransactionCard(
                 Text(
                     text = transaction.title,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
+                    fontWeight = FontWeight.SemiBold,
                     fontSize = 15.sp,
-                    color = PrimaryNavy,
-                    maxLines = 1
+                    color = PrimaryNavy
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = transaction.subtitle,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 12.sp,
-                    color = SecondaryText,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.5.sp,
+                    color = SecondaryText
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
-            // Light green Success status capsule
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(14.dp))
                     .background(SuccessCapsuleLightBg)
-                    .border(1.dp, Color(0xFF7AD889), RoundedCornerShape(14.dp))
                     .padding(horizontal = 11.dp, vertical = 5.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = transaction.statusText,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 12.5.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 12.sp,
                     color = SuccessCapsuleDarkText
                 )
             }
@@ -892,23 +842,22 @@ fun ProfileHeaderCard(
 ) {
     CashIndiaCardSurface(
         modifier = modifier,
-        cornerRadius = 18.dp,
+        cornerRadius = 16.dp,
         topTricolorStrip = true
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
-                .padding(horizontal = 12.dp, vertical = 11.dp),
+                .padding(horizontal = 14.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Circular blue avatar with SG white initials and thin saffron & green outer border
             Box(
-                modifier = Modifier.size(56.dp),
+                modifier = Modifier.size(52.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Canvas(modifier = Modifier.fillMaxSize()) {
-                    val stroke = 2.5.dp.toPx()
+                    val stroke = 2.dp.toPx()
                     drawArc(
                         color = SaffronOrange,
                         startAngle = 140f,
@@ -930,39 +879,33 @@ fun ProfileHeaderCard(
                 }
                 Box(
                     modifier = Modifier
-                        .size(48.dp)
+                        .size(44.dp)
                         .clip(CircleShape)
-                        .background(
-                            brush = Brush.verticalGradient(
-                                listOf(Color(0xFF0E68FF), Color(0xFF0A2E8A))
-                            )
-                        ),
+                        .background(PrimaryNavy),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = "SG",
                         fontFamily = CashIndiaFontFamily,
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 19.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 17.sp,
                         color = PureWhite
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.width(10.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
-            // Vertical divider between avatar and profile information
             Box(
                 modifier = Modifier
-                    .width(1.2.dp)
+                    .width(1.dp)
                     .fillMaxHeight()
                     .padding(vertical = 4.dp)
-                    .background(Color(0xFF9EA9C4))
+                    .background(DividerColor)
             )
 
-            Spacer(modifier = Modifier.width(10.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
-            // Middle + Right
             Column(
                 modifier = Modifier.weight(1f)
             ) {
@@ -974,20 +917,20 @@ fun ProfileHeaderCard(
                     Text(
                         text = "Sahid Hosen",
                         fontFamily = CashIndiaFontFamily,
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 16.5.sp,
                         color = PrimaryNavy
                     )
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        ShieldVerifiedIcon(size = 19.dp)
+                        ShieldVerifiedIcon(size = 17.dp)
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = "Active",
                             fontFamily = CashIndiaFontFamily,
-                            fontWeight = FontWeight.ExtraBold,
-                            fontSize = 13.5.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 12.5.sp,
                             color = PrimaryGreen
                         )
                     }
@@ -996,11 +939,9 @@ fun ProfileHeaderCard(
                 Text(
                     text = "UPI: sahid@paytm • Member since Oct 2026",
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 12.sp,
-                    color = SecondaryText,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.5.sp,
+                    color = SecondaryText
                 )
             }
         }
@@ -1013,84 +954,70 @@ fun ReferralBanner(
     modifier: Modifier = Modifier
 ) {
     val bannerGradient = Brush.horizontalGradient(
-        0.0f to Color(0xFFFF7B00),
-        0.35f to Color(0xFFD67A00),
-        0.65f to Color(0xFF428B0B),
-        1.0f to Color(0xFF0A8F12)
+        0.0f to Color(0xFFFF881B),
+        0.45f to Color(0xFFE07A10),
+        1.0f to Color(0xFF138808)
     )
     Surface(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
-        shadowElevation = 4.dp
+        shape = RoundedCornerShape(16.dp),
+        shadowElevation = 2.dp
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
                 .background(brush = bannerGradient)
-                .padding(horizontal = 10.dp, vertical = 10.dp),
+                .padding(horizontal = 12.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Left: Gift box illustration
             Image(
                 painter = painterResource(id = R.drawable.img_gift_box),
                 contentDescription = "Referral Gift Box",
                 modifier = Modifier
-                    .width(96.dp)
-                    .height(106.dp)
+                    .width(86.dp)
+                    .height(94.dp)
                     .clip(RoundedCornerShape(12.dp)),
                 contentScale = ContentScale.Crop
             )
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(10.dp))
 
-            // Vertical translucent white divider
             Box(
                 modifier = Modifier
                     .width(1.dp)
                     .fillMaxHeight()
                     .padding(vertical = 4.dp)
-                    .background(Color(0x88FFFFFF))
+                    .background(Color(0x66FFFFFF))
             )
 
-            Spacer(modifier = Modifier.width(10.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
-            // Right: Referral texts + WhatsApp Invite button
             Column(
                 modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = "Refer Friends & Earn",
-                    fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 18.sp,
-                    color = PureWhite
-                )
-                Text(
-                    text = "₹10 Extra",
-                    fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 26.sp,
-                    lineHeight = 29.sp,
-                    color = ReferralYellow
-                )
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = "Get 10% lifetime commission on friend's earnings",
+                    text = "Refer & Earn ₹10",
                     fontFamily = CashIndiaFontFamily,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 10.5.sp,
-                    color = PureWhite,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    fontSize = 19.sp,
+                    color = PureWhite
                 )
-                Spacer(modifier = Modifier.height(7.dp))
+                Spacer(modifier = Modifier.height(3.dp))
+                Text(
+                    text = "Earn from your referrals",
+                    fontFamily = CashIndiaFontFamily,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 13.sp,
+                    color = PureWhite
+                )
+                Spacer(modifier = Modifier.height(10.dp))
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(34.dp)
-                        .clip(RoundedCornerShape(17.dp))
+                        .height(36.dp)
+                        .clip(RoundedCornerShape(18.dp))
                         .background(PureWhite)
                         .clickable { onInviteClick() }
                         .testTag("whatsapp_invite_button"),
@@ -1100,14 +1027,14 @@ fun ReferralBanner(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        WhatsAppCircleIcon(size = 20.dp)
+                        WhatsAppCircleIcon(size = 18.dp)
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
                             text = "Invite Now (WhatsApp)",
                             fontFamily = CashIndiaFontFamily,
-                            fontWeight = FontWeight.ExtraBold,
-                            fontSize = 13.sp,
-                            color = Color(0xFFE65C00)
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 13.5.sp,
+                            color = Color(0xFFD96B00)
                         )
                     }
                 }
@@ -1130,19 +1057,19 @@ fun SettingsItemCard(
     modifier: Modifier = Modifier
 ) {
     CashIndiaCardSurface(
-        modifier = modifier.then(
-            if (onClick != null) Modifier.clickable { onClick() } else Modifier
-        ).testTag(testTag),
+        modifier = modifier
+            .then(if (onClick != null) Modifier.clickable { onClick() } else Modifier)
+            .testTag(testTag),
         cornerRadius = 15.dp
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 13.dp, vertical = 9.dp),
+                .padding(horizontal = 14.dp, vertical = 11.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
-                modifier = Modifier.size(32.dp),
+                modifier = Modifier.size(30.dp),
                 contentAlignment = Alignment.Center
             ) {
                 leadingIcon()
@@ -1154,19 +1081,17 @@ fun SettingsItemCard(
                 Text(
                     text = title,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 15.5.sp,
                     color = PrimaryNavy
                 )
-                Spacer(modifier = Modifier.height(1.dp))
+                Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = subtitle,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 12.sp,
-                    color = SecondaryText,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.5.sp,
+                    color = SecondaryText
                 )
             }
             if (isToggleSetting) {
@@ -1177,7 +1102,7 @@ fun SettingsItemCard(
                         checkedThumbColor = PureWhite,
                         checkedTrackColor = SaffronOrange,
                         uncheckedThumbColor = PureWhite,
-                        uncheckedTrackColor = Color(0xFFB5C0D4)
+                        uncheckedTrackColor = Color(0xFFCBD5E1)
                     ),
                     modifier = Modifier.testTag("${testTag}_switch")
                 )
@@ -1188,7 +1113,7 @@ fun SettingsItemCard(
                     if (showGreenStatusDot) {
                         Box(
                             modifier = Modifier
-                                .size(10.dp)
+                                .size(8.dp)
                                 .clip(CircleShape)
                                 .background(PrimaryGreen)
                         )
@@ -1198,7 +1123,7 @@ fun SettingsItemCard(
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         contentDescription = null,
                         tint = PrimaryNavy,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(22.dp)
                     )
                 }
             }
@@ -1225,38 +1150,36 @@ fun SupportCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 10.dp),
+                .padding(horizontal = 14.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
-                modifier = Modifier.size(32.dp),
+                modifier = Modifier.size(30.dp),
                 contentAlignment = Alignment.Center
             ) {
                 leadingIcon()
             }
-            Spacer(modifier = Modifier.width(11.dp))
+            Spacer(modifier = Modifier.width(12.dp))
             Column(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
                     text = title,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 15.5.sp,
                     color = PrimaryNavy
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = description,
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 11.5.sp,
-                    color = SecondaryText,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.5.sp,
+                    color = SecondaryText
                 )
             }
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(10.dp))
             if (isGreenChatButton) {
                 Box(
                     modifier = Modifier
@@ -1275,13 +1198,13 @@ fun SupportCard(
                             imageVector = Icons.Filled.ChatBubble,
                             contentDescription = null,
                             tint = PureWhite,
-                            modifier = Modifier.size(15.dp)
+                            modifier = Modifier.size(14.dp)
                         )
                         Spacer(modifier = Modifier.width(5.dp))
                         Text(
                             text = buttonText,
                             fontFamily = CashIndiaFontFamily,
-                            fontWeight = FontWeight.ExtraBold,
+                            fontWeight = FontWeight.SemiBold,
                             fontSize = 13.5.sp,
                             color = PureWhite
                         )
@@ -1292,16 +1215,16 @@ fun SupportCard(
                     modifier = Modifier
                         .height(34.dp)
                         .clip(RoundedCornerShape(17.dp))
-                        .border(1.4.dp, PrimaryNavy, RoundedCornerShape(17.dp))
+                        .border(1.2.dp, PrimaryNavy, RoundedCornerShape(17.dp))
                         .clickable { onButtonClick() }
-                        .padding(horizontal = 16.dp)
+                        .padding(horizontal = 15.dp)
                         .testTag(testTag),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = buttonText,
                         fontFamily = CashIndiaFontFamily,
-                        fontWeight = FontWeight.ExtraBold,
+                        fontWeight = FontWeight.SemiBold,
                         fontSize = 13.5.sp,
                         color = PrimaryNavy
                     )

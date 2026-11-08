@@ -59,18 +59,18 @@ fun MyTasksScreen(
             .fillMaxSize()
             .background(MainScreenBackground)
             .verticalScroll(scrollState)
-            .padding(horizontal = 16.dp, vertical = 6.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
             .testTag("my_tasks_screen")
     ) {
         // A. Header
         CoinBalanceHeader(
             isEarnHomeHeader = false,
             title = "My Tasks",
-            subtitle = "Track your live rewards",
+            subtitle = "Track Your Rewards",
             badgeText = uiState.earnHeaderBalanceText
         )
 
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         // B. Earnings Summary Card
         EarningsSummaryCard(
@@ -78,17 +78,16 @@ fun MyTasksScreen(
             pendingVerification = uiState.pendingVerificationText
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-        // C. Task Filter Tabs (Horizontal Rounded Segmented Control)
+        // C. Task Filter Tabs (Ongoing / Completed)
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(42.dp),
-            shape = RoundedCornerShape(21.dp),
+                .height(40.dp),
+            shape = RoundedCornerShape(20.dp),
             color = LightSurface,
-            border = BorderStroke(1.dp, CardBorderColor),
-            shadowElevation = 2.dp
+            border = BorderStroke(1.dp, CardBorderColor)
         ) {
             Row(
                 modifier = Modifier.fillMaxSize(),
@@ -101,7 +100,7 @@ fun MyTasksScreen(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxHeight()
-                        .clip(RoundedCornerShape(21.dp))
+                        .clip(RoundedCornerShape(20.dp))
                         .then(
                             if (isOngoingSelected) {
                                 Modifier.background(brush = OrangeHorizontalGradient)
@@ -114,10 +113,10 @@ fun MyTasksScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Ongoing & Pending (2)",
+                        text = "Ongoing",
                         fontFamily = CashIndiaFontFamily,
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 13.5.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.sp,
                         color = if (isOngoingSelected) PureWhite else PrimaryNavy
                     )
                 }
@@ -126,7 +125,7 @@ fun MyTasksScreen(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxHeight()
-                        .clip(RoundedCornerShape(21.dp))
+                        .clip(RoundedCornerShape(20.dp))
                         .then(
                             if (!isOngoingSelected) {
                                 Modifier.background(brush = OrangeHorizontalGradient)
@@ -139,20 +138,20 @@ fun MyTasksScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Completed & Paid (12)",
+                        text = "Completed",
                         fontFamily = CashIndiaFontFamily,
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 13.5.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.sp,
                         color = if (!isOngoingSelected) PureWhite else PrimaryNavy
                     )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         if (uiState.selectedMyTasksSegment == MyTasksSegment.ONGOING_PENDING) {
-            // D. Ongoing and Pending Task Cards (Exactly 2 cards)
+            // D. Ongoing Task Cards
             Column(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
@@ -165,7 +164,7 @@ fun MyTasksScreen(
                                     title = task.title,
                                     provider = "Live Task Telemetry",
                                     rewardText = task.statusText,
-                                    instructions = "${task.subtitle}. Keep VPN turned off while provider callback verification completes."
+                                    instructions = "${task.subtitle}. Keep VPN off during verification."
                                 )
                             )
                         }
@@ -173,15 +172,15 @@ fun MyTasksScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(20.dp))
         }
 
-        // E. Completed & Credited Today Section
+        // E. Recently Completed Section
         Text(
-            text = "Completed & Credited Today",
+            text = "Recently Completed",
             fontFamily = CashIndiaFontFamily,
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.5.sp,
             color = PrimaryNavy
         )
 
@@ -195,20 +194,20 @@ fun MyTasksScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         // F. Information Notice Banner
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(16.dp))
+                .clip(RoundedCornerShape(14.dp))
                 .background(InfoBannerBlueBg)
-                .padding(horizontal = 12.dp, vertical = 9.dp),
+                .padding(horizontal = 12.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
                 modifier = Modifier
-                    .size(22.dp)
+                    .size(20.dp)
                     .clip(CircleShape)
                     .background(PrimaryNavy),
                 contentAlignment = Alignment.Center
@@ -216,22 +215,21 @@ fun MyTasksScreen(
                 Text(
                     text = "i",
                     fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp,
                     color = PureWhite
                 )
             }
             Spacer(modifier = Modifier.width(10.dp))
             Text(
-                text = "Most tasks verify within 5 minutes. Keep VPN turned off.",
+                text = "Keep VPN off during verification.",
                 fontFamily = CashIndiaFontFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = 12.5.sp,
-                color = PrimaryNavy,
-                maxLines = 1
+                fontWeight = FontWeight.Medium,
+                fontSize = 13.sp,
+                color = PrimaryNavy
             )
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }

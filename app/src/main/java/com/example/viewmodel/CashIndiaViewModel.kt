@@ -45,7 +45,7 @@ data class CashIndiaUiState(
         AppTaskItem(
             id = "ludo_supreme",
             title = "Ludo Supreme",
-            description = "Download & open for 2 mins",
+            description = "Install & Play",
             rewardText = "Earn ₹10",
             rewardRupees = 10,
             iconRes = R.drawable.img_ludo_icon,
@@ -63,7 +63,7 @@ data class CashIndiaUiState(
         AppTaskItem(
             id = "flipkart_shop",
             title = "Flipkart Shop",
-            description = "Open app & browse deals",
+            description = "Explore Deals",
             rewardText = "Earn ₹15",
             rewardRupees = 15,
             iconRes = R.drawable.img_flipkart_icon,
@@ -86,7 +86,7 @@ data class CashIndiaUiState(
         OngoingTaskItem(
             id = "paytm_signup",
             title = "Paytm Money Sign-Up",
-            subtitle = "Verifying registration • Wait 5 mins",
+            subtitle = "Verification Pending",
             statusText = "Verifying • ₹20",
             progressFraction = null,
             progressLabel = null,

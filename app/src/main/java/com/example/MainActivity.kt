@@ -22,6 +22,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.cashindia.app.engines.PlaytimeEngine
+import com.cashindia.app.engines.PubScaleEngine
 import com.example.model.CashIndiaTab
 import com.example.ui.components.CashIndiaBottomNavigation
 import com.example.ui.screens.CashIndiaInteractiveSheet
@@ -34,19 +36,65 @@ import com.example.ui.theme.MainScreenBackground
 import com.example.viewmodel.CashIndiaViewModel
 
 class MainActivity : ComponentActivity() {
+
+    companion object {
+        // TODO: Connect to Firebase Remote Config / Firestore
+        const val PLAYTIME_SDK_HASH = "PENDING_HASH"
+        const val CURRENT_USER_ID = "test_user_01"
+        const val IS_PLAYTIME_ENABLED = false
+
+        // TODO: Connect to Firebase Remote Config
+        const val PUBSCALE_APP_ID = PubScaleEngine.DEFAULT_APP_ID // "81716375"
+        const val IS_PUBSCALE_SANDBOX = true
+        const val IS_PUBSCALE_ENABLED = true
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Step 1: Initialize adjoe Playtime Engine in safe fallback/sandbox mode
+        // TODO: Connect to Firebase Remote Config / Firestore
+        PlaytimeEngine.initEngine(
+            context = applicationContext,
+            sdkHash = PLAYTIME_SDK_HASH,
+            userId = CURRENT_USER_ID,
+            isEnabled = IS_PLAYTIME_ENABLED
+        )
+
+        // Step 2: Initialize PubScale Offerwall Engine in Sandbox/Test mode
+        // TODO: Connect to Firebase Remote Config
+        PubScaleEngine.initEngine(
+            context = this,
+            appId = PUBSCALE_APP_ID,
+            userId = CURRENT_USER_ID,
+            isSandbox = IS_PUBSCALE_SANDBOX,
+            isEnabled = IS_PUBSCALE_ENABLED
+        )
+
         enableEdgeToEdge()
         setContent {
             CashIndiaTheme {
-                CashIndiaApp()
+                CashIndiaApp(currentUserId = CURRENT_USER_ID)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Re-verify / initialize Playtime Engine when returning from Usage Access Settings
+        // TODO: Connect to Firebase Remote Config / Firestore
+        PlaytimeEngine.initEngine(
+            context = applicationContext,
+            sdkHash = PLAYTIME_SDK_HASH,
+            userId = CURRENT_USER_ID,
+            isEnabled = IS_PLAYTIME_ENABLED
+        )
     }
 }
 
 @Composable
 fun CashIndiaApp(
+    currentUserId: String = MainActivity.CURRENT_USER_ID,
     viewModel: CashIndiaViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -94,7 +142,8 @@ fun CashIndiaApp(
                 EarnScreen(
                     uiState = uiState,
                     onSelectFilter = viewModel::selectTaskFilter,
-                    onOpenSheet = viewModel::openSheet
+                    onOpenSheet = viewModel::openSheet,
+                    currentUserId = currentUserId
                 )
             }
             composable(CashIndiaTab.MY_TASKS.route) {

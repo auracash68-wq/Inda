@@ -1,15 +1,13 @@
 <resources>
     <string name="app_name">Cash India</string>
-    <string name="brand_cash">Cash</string>
-    <string name="brand_india">India</string>
     <string name="header_coins_balance">2,500 Coins | ₹25.00</string>
-    <string name="featured_gaming_title">Play Games &amp;\nEarn Every Minute</string>
-    <string name="featured_gaming_subtitle">No hard levels • Instant coins per minute</string>
+    <string name="featured_gaming_title">Play &amp; Earn</string>
+    <string name="featured_gaming_subtitle">Earn Coins Per Minute</string>
     <string name="btn_play_now">Play Now</string>
-    <string name="section_daily_surveys">Daily Paid Surveys (Guaranteed Bonus)</string>
+    <string name="section_daily_surveys">Paid Surveys</string>
     <string name="survey_provider_cpx">CPX Research</string>
     <string name="btn_start_survey">Start Survey</string>
-    <string name="section_instant_tasks">Instant App Tasks (2 Mins)</string>
+    <string name="section_instant_tasks">App Tasks</string>
     <string name="filter_all_tasks">All Tasks</string>
     <string name="filter_easy_install">Easy Install</string>
     <string name="nav_earn">Earn</string>
@@ -17,23 +15,23 @@
     <string name="nav_wallet">Wallet</string>
     <string name="nav_profile">Profile</string>
     <string name="my_tasks_title">My Tasks</string>
-    <string name="my_tasks_subtitle">Track your live rewards</string>
+    <string name="my_tasks_subtitle">Track Your Rewards</string>
     <string name="todays_credited_label">Today\'s Credited</string>
     <string name="pending_verification_label">Pending Verification</string>
-    <string name="section_completed_today">Completed &amp; Credited Today</string>
-    <string name="tasks_info_banner">Most tasks verify within 5 minutes. Keep VPN turned off.</string>
+    <string name="section_completed_today">Recently Completed</string>
+    <string name="tasks_info_banner">Keep VPN off during verification.</string>
     <string name="my_wallet_title">My Wallet</string>
-    <string name="my_wallet_subtitle">24/7 Instant UPI Cashout</string>
+    <string name="my_wallet_subtitle">Fast &amp; Easy Withdrawals</string>
     <string name="badge_secure">100% Secure</string>
     <string name="available_balance_label">Available Balance</string>
-    <string name="coins_conversion_note">100 Coins = ₹1.00 • Instant Transfer</string>
-    <string name="section_select_withdrawal">Select Withdrawal Method</string>
+    <string name="coins_conversion_note">100 Coins = ₹1</string>
+    <string name="section_select_withdrawal">Withdrawal Method</string>
     <string name="label_enter_upi_id">Enter UPI ID</string>
     <string name="placeholder_upi_id">example@okaxis</string>
     <string name="badge_verified">Verified</string>
-    <string name="section_recent_withdrawals">Recent Withdrawals (Bank Proof)</string>
+    <string name="section_recent_withdrawals">Recent Withdrawals</string>
     <string name="profile_title">My Profile &amp; Help</string>
-    <string name="profile_subtitle">Manage account &amp; support</string>
+    <string name="profile_subtitle">Account Settings</string>
     <string name="section_app_settings">App Settings</string>
     <string name="section_need_help">Need Help?</string>
     <string name="footer_version_terms">Cash India v1.0.0 • Terms of Service &amp; Privacy Policy</string>
