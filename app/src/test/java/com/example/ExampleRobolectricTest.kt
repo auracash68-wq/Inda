@@ -14,7 +14,7 @@ import org.junit.Test
 class ExampleRobolectricTest {
 
     @Test
-    fun verifyCashIndiaCleanZeroStateAndRealInteractions() {
+    fun verifyCashIndiaCleanZeroStateAndCoreInteractions() {
         val viewModel = CashIndiaViewModel()
 
         // 1. Initial Earn Screen state (Clean 0-balance state)
@@ -35,7 +35,7 @@ class ExampleRobolectricTest {
 
         // Test dynamic setter
         viewModel.setDynamicSurveys(listOf(
-            com.example.model.SurveyOffer("srv_1", "CPX Live", "10 Mins", "₹20", 20, 2000)
+            com.example.model.SurveyOffer("srv_1", "Live Partner Survey", "10 Mins", "₹20", 20, 2000)
         ))
         assertEquals(1, viewModel.uiState.value.surveys.size)
 
@@ -43,8 +43,8 @@ class ExampleRobolectricTest {
         viewModel.selectTaskFilter(TaskFilter.EASY_INSTALL)
         assertEquals(TaskFilter.EASY_INSTALL, viewModel.uiState.value.selectedTaskFilter)
 
-        // 2. Real reward crediting from PubScale SDK callback
-        viewModel.creditRealCoins(1600, "PubScale: High Paying Offer")
+        // 2. Real reward crediting callback
+        viewModel.creditRealCoins(1600, "Partner Offerwall Task")
         assertEquals(1600, viewModel.uiState.value.earnHeaderCoins)
         assertEquals("1,600 Coins | ₹16.00", viewModel.uiState.value.earnHeaderBalanceText)
         assertEquals(1600, viewModel.uiState.value.walletBalanceCoins)
@@ -83,29 +83,5 @@ class ExampleRobolectricTest {
         assertTrue(viewModel.uiState.value.pushNotificationsEnabled)
         viewModel.togglePushNotifications(false)
         assertFalse(viewModel.uiState.value.pushNotificationsEnabled)
-    }
-
-    @Test
-    fun verifyCpxResearchEngineUrlGeneration() {
-        val userId = "cashindia_user_test"
-        val url = com.cashindia.app.engines.CpxResearchEngine.buildSurveyUrl(userId)
-        assertTrue(url.contains("offer.cpx-research.com"))
-        assertTrue(url.contains("app_id="))
-        assertTrue(url.contains("ext_user_id=$userId"))
-    }
-
-    @Test
-    fun verifySafeMediaDrmSafeOnEmulatorsAndJvm() {
-        val uuid = java.util.UUID.randomUUID()
-        val safeDrm = com.cashindia.app.engines.SafeMediaDrm(uuid)
-        // Under JVM/Robolectric test environment, SafeMediaDrm correctly catches any native DRM HAL unavailability
-        try {
-            val bytes = safeDrm.getPropertyByteArray("deviceUniqueId")
-            assertNotNull(bytes)
-        } catch (e: Exception) {
-            // Safe failure without crashing the app or native DRM HAL
-            assertTrue(e is UnsupportedOperationException || e is android.media.MediaDrmException)
-        }
-        safeDrm.close()
     }
 }

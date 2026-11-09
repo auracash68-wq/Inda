@@ -116,24 +116,6 @@ fun RewardCard(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(
-                    text = "Play & Earn",
-                    fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
-                    lineHeight = 22.sp,
-                    color = PrimaryNavy
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "Earn Coins Per Minute",
-                    fontFamily = CashIndiaFontFamily,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 13.sp,
-                    lineHeight = 17.sp,
-                    color = SecondaryText
-                )
-                Spacer(modifier = Modifier.height(10.dp))
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -347,21 +329,16 @@ fun CpxSurveyLiveCard(
 
                 Spacer(modifier = Modifier.width(12.dp))
 
-                Column(modifier = Modifier.weight(1f)) {
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.Center
+                ) {
                     Text(
                         text = "CPX Research Surveys",
                         fontFamily = CashIndiaFontFamily,
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
                         color = PrimaryNavy
-                    )
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(
-                        text = "High-paying surveys • Real-time coin credits",
-                        fontFamily = CashIndiaFontFamily,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 12.5.sp,
-                        color = SecondaryText
                     )
                 }
             }
@@ -388,21 +365,6 @@ fun CpxSurveyLiveCard(
                         fontSize = 12.5.sp,
                         color = SecondaryText
                     )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(Color(0xFFE8F5E9))
-                            .padding(horizontal = 8.dp, vertical = 3.dp)
-                    ) {
-                        Text(
-                            text = "Earn ₹10 - ₹100",
-                            fontFamily = CashIndiaFontFamily,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 11.5.sp,
-                            color = PrimaryGreen
-                        )
-                    }
                 }
 
                 Box(
@@ -458,21 +420,16 @@ fun PubScaleOfferwallLiveCard(
 
                 Spacer(modifier = Modifier.width(12.dp))
 
-                Column(modifier = Modifier.weight(1f)) {
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.Center
+                ) {
                     Text(
                         text = "PubScale High-Paying Tasks",
                         fontFamily = CashIndiaFontFamily,
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
                         color = PrimaryNavy
-                    )
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(
-                        text = "Browse 100+ live app install offers & games",
-                        fontFamily = CashIndiaFontFamily,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 12.5.sp,
-                        color = SecondaryText
                     )
                 }
             }

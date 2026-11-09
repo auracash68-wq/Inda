@@ -1,6 +1,5 @@
 package com.example.ui.screens
 
-import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,18 +17,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.cashindia.app.engines.CpxResearchEngine
-import com.cashindia.app.engines.PlaytimeEngine
-import com.cashindia.app.engines.PubScaleEngine
 import com.example.model.ActiveSheet
 import com.example.model.TaskFilter
 import com.example.ui.components.AppTaskCard
@@ -52,28 +46,12 @@ fun EarnScreen(
     onSelectFilter: (TaskFilter) -> Unit,
     onOpenSheet: (ActiveSheet) -> Unit,
     onCreditCoins: (Int, String) -> Unit = { _, _ -> },
-    currentUserId: String = "",
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
-    val effectiveUserId = currentUserId.ifBlank { com.cashindia.app.UserManager.getUserId(context) }
     val scrollState = rememberScrollState()
     val filteredTasks = when (uiState.selectedTaskFilter) {
         TaskFilter.ALL_TASKS -> uiState.allAppTasks
         TaskFilter.EASY_INSTALL -> uiState.allAppTasks.filter { it.isEasyInstall }
-    }
-
-    DisposableEffect(Unit) {
-        PubScaleEngine.setRewardCreditListener { coins, title ->
-            onCreditCoins(coins, title)
-        }
-        CpxResearchEngine.setRewardCreditListener { coins, title ->
-            onCreditCoins(coins, title)
-        }
-        onDispose {
-            PubScaleEngine.setRewardCreditListener(null)
-            CpxResearchEngine.setRewardCreditListener(null)
-        }
     }
 
     Column(
@@ -93,19 +71,23 @@ fun EarnScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        // B. Playtime Earning Banner (Connected to PlaytimeEngine)
+        // B. Playtime Earning Banner
         RewardCard(
             onPlayNowClick = {
-                val activity = context as? Activity
-                if (activity != null) {
-                    PlaytimeEngine.openPlaytimeCatalog(activity, effectiveUserId)
-                }
+                onOpenSheet(
+                    ActiveSheet.OfferLaunch(
+                        title = "adjoe Playtime",
+                        provider = "Playtime Engine",
+                        rewardText = "Play Now",
+                        instructions = "Play featured games to earn coins continuously. Partner engine ready for integration."
+                    )
+                )
             }
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // C. Paid Surveys Section (Connected directly to real CPX Research Survey Web Portal)
+        // C. Paid Surveys Section
         Text(
             text = "Paid Surveys",
             fontFamily = CashIndiaFontFamily,
@@ -125,23 +107,31 @@ fun EarnScreen(
                     SurveyCard(
                         survey = survey,
                         onStartSurvey = {
-                            val activity = context as? Activity
-                            if (activity != null) {
-                                CpxResearchEngine.openSurveys(activity, effectiveUserId)
-                            }
+                            onOpenSheet(
+                                ActiveSheet.OfferLaunch(
+                                    title = "${survey.durationText} Survey",
+                                    provider = survey.providerName,
+                                    rewardText = survey.rewardText,
+                                    instructions = "Complete the survey honestly. Rewards are credited upon partner verification."
+                                )
+                            )
                         },
                         modifier = Modifier.weight(1f)
                     )
                 }
             }
         } else {
-            // Live Dynamic CPX Research Survey Card (Direct SDK / WebView integration)
+            // Live Dynamic Survey Card
             CpxSurveyLiveCard(
                 onStartSurvey = {
-                    val activity = context as? Activity
-                    if (activity != null) {
-                        CpxResearchEngine.openSurveys(activity, effectiveUserId)
-                    }
+                    onOpenSheet(
+                        ActiveSheet.OfferLaunch(
+                            title = "CPX Research Surveys",
+                            provider = "CPX Research",
+                            rewardText = "5 - 15 Mins",
+                            instructions = "Complete surveys with instant verification. Connect your survey partner to begin."
+                        )
+                    )
                 }
             )
         }
@@ -224,7 +214,6 @@ fun EarnScreen(
         Spacer(modifier = Modifier.height(10.dp))
 
         if (filteredTasks.isNotEmpty()) {
-            // Dynamic Task Cards (Connected directly to real PubScaleEngine Offerwall)
             Column(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
@@ -232,22 +221,30 @@ fun EarnScreen(
                     AppTaskCard(
                         task = task,
                         onEarnClick = {
-                            val activity = context as? Activity
-                            if (activity != null) {
-                                PubScaleEngine.openOfferwall(activity, effectiveUserId)
-                            }
+                            onOpenSheet(
+                                ActiveSheet.OfferLaunch(
+                                    title = task.title,
+                                    provider = "Offerwall",
+                                    rewardText = task.rewardText,
+                                    instructions = "${task.description}. Follow partner instructions to receive credit."
+                                )
+                            )
                         }
                     )
                 }
             }
         } else {
-            // Live Dynamic PubScale Offerwall Card (Direct SDK Offerwall Integration)
+            // Live Dynamic Offerwall Card
             PubScaleOfferwallLiveCard(
                 onOpenOfferwall = {
-                    val activity = context as? Activity
-                    if (activity != null) {
-                        PubScaleEngine.openOfferwall(activity, effectiveUserId)
-                    }
+                    onOpenSheet(
+                        ActiveSheet.OfferLaunch(
+                            title = "PubScale High-Paying Tasks",
+                            provider = "Offerwall Partner",
+                            rewardText = "Earn ₹10 to ₹500+",
+                            instructions = "Complete app install tasks and offers. Ready for partner engine integration."
+                        )
+                    )
                 }
             )
         }

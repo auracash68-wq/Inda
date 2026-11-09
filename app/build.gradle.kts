@@ -1,82 +1,8 @@
-import com.android.build.api.instrumentation.AsmClassVisitorFactory
-import com.android.build.api.instrumentation.ClassContext
-import com.android.build.api.instrumentation.ClassData
-import com.android.build.api.instrumentation.InstrumentationParameters
-import com.android.build.api.instrumentation.InstrumentationScope
-import org.objectweb.asm.ClassVisitor
-import org.objectweb.asm.MethodVisitor
-import org.objectweb.asm.Opcodes
-
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.google.devtools.ksp)
   alias(libs.plugins.secrets)
-}
-
-abstract class PubScaleLogSanitizerFactory : AsmClassVisitorFactory<InstrumentationParameters.None> {
-  override fun createClassVisitor(
-    classContext: ClassContext,
-    nextClassVisitor: ClassVisitor
-  ): ClassVisitor {
-    return object : ClassVisitor(Opcodes.ASM9, nextClassVisitor) {
-      override fun visitMethod(
-        access: Int,
-        name: String?,
-        descriptor: String?,
-        signature: String?,
-        exceptions: Array<out String>?
-      ): MethodVisitor {
-        val mv = super.visitMethod(access, name, descriptor, signature, exceptions)
-        return object : MethodVisitor(Opcodes.ASM9, mv) {
-          override fun visitTypeInsn(opcode: Int, type: String?) {
-            val redirectedType =
-              if (opcode == Opcodes.NEW && type == "android/media/MediaDrm") {
-                "com/cashindia/app/engines/SafeMediaDrm"
-              } else {
-                type
-              }
-            super.visitTypeInsn(opcode, redirectedType)
-          }
-
-          override fun visitMethodInsn(
-            opcode: Int,
-            owner: String?,
-            name: String?,
-            descriptor: String?,
-            isInterface: Boolean
-          ) {
-            val redirectedOwner =
-              if (owner == "android/media/MediaDrm") {
-                "com/cashindia/app/engines/SafeMediaDrm"
-              } else {
-                owner
-              }
-            val sanitizedName =
-              if (opcode == Opcodes.INVOKESTATIC && owner == "android/util/Log" && name == "e") {
-                "d"
-              } else {
-                name
-              }
-            super.visitMethodInsn(opcode, redirectedOwner, sanitizedName, descriptor, isInterface)
-          }
-        }
-      }
-    }
-  }
-
-  override fun isInstrumentable(classData: ClassData): Boolean {
-    return classData.className.startsWith("com.pubscale.")
-  }
-}
-
-androidComponents {
-  onVariants { variant ->
-    variant.instrumentation.transformClassesWith(
-      PubScaleLogSanitizerFactory::class.java,
-      InstrumentationScope.ALL
-    ) {}
-  }
 }
 
 android {
@@ -154,8 +80,6 @@ secrets {
 
 dependencies {
   implementation(platform(libs.androidx.compose.bom))
-  implementation("io.adjoe:adjoe-sdk-android:4.5.3")
-  implementation("com.pubscale.sdkone:offerwall:1.0.8")
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.compose.material.icons.core)
   implementation(libs.androidx.compose.material.icons.extended)

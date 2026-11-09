@@ -65,25 +65,19 @@ class CashIndiaViewModel(application: Application) : AndroidViewModel(applicatio
     val uiState: StateFlow<CashIndiaUiState> = _uiState.asStateFlow()
 
     private fun loadInitialState(): CashIndiaUiState {
-        val savedCoins = prefs?.getInt("real_wallet_coins", 0) ?: 0
-        val savedRupees = savedCoins / 100.0
-        val numberFormat = NumberFormat.getNumberInstance(Locale.US)
-        val headerText = "${numberFormat.format(savedCoins)} Coins | ₹${String.format(Locale.US, "%.2f", savedRupees)}"
-        val creditedText = "₹${String.format(Locale.US, "%.2f", savedRupees)} (${numberFormat.format(savedCoins)} Coins)"
-
-        val savedCompletedTasks = loadCompletedTasksFromPrefs()
-        val savedWithdrawals = loadWithdrawalsFromPrefs()
-
+        // Absolute zero state for clean integration from scratch
         return CashIndiaUiState(
-            earnHeaderCoins = savedCoins,
-            earnHeaderBalanceText = headerText,
-            walletBalanceCoins = savedCoins,
-            walletBalanceRupees = savedRupees,
-            todaysCreditedText = creditedText,
+            earnHeaderCoins = 0,
+            earnHeaderBalanceText = "0 Coins | ₹0.00",
+            walletBalanceCoins = 0,
+            walletBalanceRupees = 0.00,
+            todaysCreditedText = "₹0.00 (0 Coins)",
             pendingVerificationText = "₹0.00 (0 Tasks)",
             ongoingTasks = emptyList(),
-            completedTasks = savedCompletedTasks,
-            recentWithdrawals = savedWithdrawals
+            completedTasks = emptyList(),
+            recentWithdrawals = emptyList(),
+            surveys = emptyList(),
+            allAppTasks = emptyList()
         )
     }
 
