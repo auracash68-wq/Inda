@@ -19,7 +19,6 @@ val CardBackground = Color(0xFFFFFFFF)
 val LightSurface = Color(0xFFF1F5F9)
 val DividerColor = Color(0xFFE2E8F0)
 val CardBorderColor = Color(0xFFE2E8F0)
-val UnselectedChipBg = Color(0xFFEFF4F9)
 
 // Status & Accent Colors
 val SuccessGreen = Color(0xFF138808)

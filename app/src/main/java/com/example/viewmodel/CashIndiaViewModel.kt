@@ -5,21 +5,16 @@ import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import com.example.R
 import com.example.model.ActiveSheet
-import com.example.model.AppTaskItem
 import com.example.model.CashIndiaTab
 import com.example.model.CompletedTaskItem
 import com.example.model.MyTasksSegment
 import com.example.model.OngoingTaskItem
-import com.example.model.SurveyOffer
-import com.example.model.TaskFilter
 import com.example.model.WithdrawalMethod
 import com.example.model.WithdrawalTransaction
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import org.json.JSONArray
-import org.json.JSONObject
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -31,9 +26,6 @@ data class CashIndiaUiState(
     val earnHeaderBalanceText: String = "0 Coins | ₹0.00",
     val walletBalanceRupees: Double = 0.00,
     val walletBalanceCoins: Int = 0,
-    val selectedTaskFilter: TaskFilter = TaskFilter.ALL_TASKS,
-    val surveys: List<SurveyOffer> = emptyList(),
-    val allAppTasks: List<AppTaskItem> = emptyList(),
     val selectedMyTasksSegment: MyTasksSegment = MyTasksSegment.ONGOING_PENDING,
     val todaysCreditedText: String = "₹0.00 (0 Coins)",
     val pendingVerificationText: String = "₹0.00 (0 Tasks)",
@@ -75,9 +67,7 @@ class CashIndiaViewModel(application: Application) : AndroidViewModel(applicatio
             pendingVerificationText = "₹0.00 (0 Tasks)",
             ongoingTasks = emptyList(),
             completedTasks = emptyList(),
-            recentWithdrawals = emptyList(),
-            surveys = emptyList(),
-            allAppTasks = emptyList()
+            recentWithdrawals = emptyList()
         )
     }
 
@@ -147,10 +137,6 @@ class CashIndiaViewModel(application: Application) : AndroidViewModel(applicatio
         if (_uiState.value.selectedTab != tab) {
             _uiState.update { it.copy(selectedTab = tab, statusMessage = null) }
         }
-    }
-
-    fun selectTaskFilter(filter: TaskFilter) {
-        _uiState.update { it.copy(selectedTaskFilter = filter) }
     }
 
     fun selectMyTasksSegment(segment: MyTasksSegment) {
@@ -320,14 +306,6 @@ class CashIndiaViewModel(application: Application) : AndroidViewModel(applicatio
                 statusMessage = "Support ticket submitted for provider verification."
             )
         }
-    }
-
-    fun setDynamicSurveys(surveys: List<SurveyOffer>) {
-        _uiState.update { it.copy(surveys = surveys) }
-    }
-
-    fun setDynamicAppTasks(tasks: List<AppTaskItem>) {
-        _uiState.update { it.copy(allAppTasks = tasks) }
     }
 
     fun clearStatusMessage() {

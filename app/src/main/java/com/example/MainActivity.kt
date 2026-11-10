@@ -93,10 +93,7 @@ fun CashIndiaApp(
         ) {
             composable(CashIndiaTab.EARN.route) {
                 EarnScreen(
-                    uiState = uiState,
-                    onSelectFilter = viewModel::selectTaskFilter,
-                    onOpenSheet = viewModel::openSheet,
-                    onCreditCoins = viewModel::creditRealCoins
+                    uiState = uiState
                 )
             }
             composable(CashIndiaTab.MY_TASKS.route) {

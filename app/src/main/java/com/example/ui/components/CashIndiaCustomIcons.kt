@@ -153,39 +153,6 @@ fun GoldCoinStackIcon(
 }
 
 @Composable
-fun CpxResearchLogoIcon(
-    modifier: Modifier = Modifier,
-    size: Dp = 24.dp
-) {
-    Canvas(modifier = modifier.size(size)) {
-        val stroke = this.size.minDimension * 0.22f
-        val inset = stroke / 2f
-        val arcSize = Size(this.size.width - stroke, this.size.height - stroke)
-
-        // Deep blue main arc
-        drawArc(
-            color = Color(0xFF0052DF),
-            startAngle = 135f,
-            sweepAngle = 220f,
-            useCenter = false,
-            topLeft = Offset(inset, inset),
-            size = arcSize,
-            style = Stroke(width = stroke, cap = StrokeCap.Round)
-        )
-        // Lighter blue lower-right segment
-        drawArc(
-            color = Color(0xFF2B7FFF),
-            startAngle = 5f,
-            sweepAngle = 95f,
-            useCenter = false,
-            topLeft = Offset(inset, inset),
-            size = arcSize,
-            style = Stroke(width = stroke, cap = StrokeCap.Round)
-        )
-    }
-}
-
-@Composable
 fun ShieldVerifiedIcon(
     modifier: Modifier = Modifier,
     size: Dp = 20.dp,

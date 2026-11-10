@@ -1,13 +1,6 @@
 <resources>
     <string name="app_name">Cash India</string>
     <string name="header_coins_balance">2,500 Coins | ₹25.00</string>
-    <string name="btn_play_now">Play Now</string>
-    <string name="section_daily_surveys">Paid Surveys</string>
-    <string name="survey_provider_cpx">CPX Research</string>
-    <string name="btn_start_survey">Start Survey</string>
-    <string name="section_instant_tasks">App Tasks</string>
-    <string name="filter_all_tasks">All Tasks</string>
-    <string name="filter_easy_install">Easy Install</string>
     <string name="nav_earn">Earn</string>
     <string name="nav_my_tasks">My Tasks</string>
     <string name="nav_wallet">Wallet</string>

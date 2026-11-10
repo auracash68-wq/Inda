@@ -1,18 +1,12 @@
 package com.example.model
 
 import androidx.annotation.DrawableRes
-import com.example.R
 
 enum class CashIndiaTab(val route: String, val label: String) {
     EARN("earn", "Earn"),
     MY_TASKS("my_tasks", "My Tasks"),
     WALLET("wallet", "Wallet"),
     PROFILE("profile", "Profile")
-}
-
-enum class TaskFilter {
-    ALL_TASKS,
-    EASY_INSTALL
 }
 
 enum class MyTasksSegment {
@@ -25,25 +19,6 @@ enum class WithdrawalMethod(val id: String, val title: String) {
     GOOGLE_PLAY("google_play", "Google Play\nCode"),
     AMAZON_PAY("amazon_pay", "Amazon Pay")
 }
-
-data class SurveyOffer(
-    val id: String,
-    val providerName: String,
-    val durationText: String,
-    val rewardText: String,
-    val rewardRupees: Int,
-    val rewardCoins: Int
-)
-
-data class AppTaskItem(
-    val id: String,
-    val title: String,
-    val description: String,
-    val rewardText: String,
-    val rewardRupees: Int,
-    @param:DrawableRes val iconRes: Int,
-    val isEasyInstall: Boolean
-)
 
 data class OngoingTaskItem(
     val id: String,

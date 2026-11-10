@@ -2,7 +2,6 @@ package com.example
 
 import com.example.model.CashIndiaTab
 import com.example.model.MyTasksSegment
-import com.example.model.TaskFilter
 import com.example.model.WithdrawalMethod
 import com.example.viewmodel.CashIndiaViewModel
 import org.junit.Assert.assertEquals
@@ -29,19 +28,6 @@ class ExampleRobolectricTest {
         assertEquals(0, initial.ongoingTasks.size)
         assertEquals(0, initial.completedTasks.size)
         assertEquals(0, initial.recentWithdrawals.size)
-        assertEquals(0, initial.surveys.size)
-        assertEquals(0, initial.allAppTasks.size)
-        assertEquals(TaskFilter.ALL_TASKS, initial.selectedTaskFilter)
-
-        // Test dynamic setter
-        viewModel.setDynamicSurveys(listOf(
-            com.example.model.SurveyOffer("srv_1", "Live Partner Survey", "10 Mins", "₹20", 20, 2000)
-        ))
-        assertEquals(1, viewModel.uiState.value.surveys.size)
-
-        // Filter tasks
-        viewModel.selectTaskFilter(TaskFilter.EASY_INSTALL)
-        assertEquals(TaskFilter.EASY_INSTALL, viewModel.uiState.value.selectedTaskFilter)
 
         // 2. Real reward crediting callback
         viewModel.creditRealCoins(1600, "Partner Offerwall Task")
